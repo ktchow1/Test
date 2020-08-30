@@ -47,51 +47,51 @@ void test_int2str();
 void test_matrix_spiral();
 
 int main()
-{	
+{    
 /*  test_ctad();
-  	test_decltype();
-	test_declval();  
+    test_decltype();
+    test_declval();  
     test_deleter();
-	test_error_handling();
-	test_filesystem();
-	test_hash();
-	test_hash2(); 
-	test_hashmap(); 
-	test_hashmap2(); 
-	test_literal_operator(); 
+    test_error_handling();
+    test_filesystem();
+    test_hash();
+    test_hash2(); 
+    test_hashmap(); 
+    test_hashmap2(); 
+    test_literal_operator(); 
     test_memory(); */
     test_optional();  
-/*	test_parallel_algo();
-	test_perfect_forwarding(); 
-	test_placement_new0();
-	test_placement_new1();
-	test_placement_new2();
-	test_rand(); 
-	test_sfinae0();
-	test_sfinae1();
-	test_sfinae2(); 
-	test_sfinae_class();
-	test_singleton();
-	test_size(); 
-	test_structured_binding(); 
-	test_template_alias();
-	test_template_template(); 
-	test_template_common_type();
-	test_template_zip_with(); 
-	test_tree(); 
-	test_tuple(); 	
-	test_unique_ptr(); 
-	test_unique_ptr_to_noncopyable();
-	test_variadic();  
-	test_variant_and_any();  
-	test_variant_overloading_lambda();
-	test_variant_aggregate_init();
-	test_variant_CTAD(); */
+/*  test_parallel_algo();
+    test_perfect_forwarding(); 
+    test_placement_new0();
+    test_placement_new1();
+    test_placement_new2();
+    test_rand(); 
+    test_sfinae0();
+    test_sfinae1();
+    test_sfinae2(); 
+    test_sfinae_class();
+    test_singleton();
+    test_size(); 
+    test_structured_binding(); 
+    test_template_alias();
+    test_template_template(); 
+    test_template_common_type();
+    test_template_zip_with(); 
+    test_tree(); 
+    test_tuple();     
+    test_unique_ptr(); 
+    test_unique_ptr_to_noncopyable();
+    test_variadic();  
+    test_variant_and_any();  
+    test_variant_overloading_lambda();
+    test_variant_aggregate_init();
+    test_variant_CTAD(); */
 
-	// hackersrank
-//	test_anagram();	
-//	test_int2str();
-//	test_matrix_spiral(); 
-	std::cout << "\n\n\n";
-	return 0;
+    // hackersrank
+//  test_anagram();    
+//  test_int2str();
+//  test_matrix_spiral(); 
+    std::cout << "\n\n\n";
+    return 0;
 }

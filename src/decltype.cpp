@@ -4,13 +4,13 @@
 
 template<typename T> void print_type()
 {
-	typedef typename std::remove_reference<T>::type TR;	
-	std::cout << "\n" << typeid(TR).name() << " ";
+    typedef typename std::remove_reference<T>::type TR;    
+    std::cout << "\n" << typeid(TR).name() << " ";
 
-	if constexpr (std::is_const<TR>::value)            std::cout << "const ";
-	if constexpr (std::is_volatile<TR>::value)         std::cout << "volatile ";
-	if constexpr (std::is_lvalue_reference<T>::value)  std::cout << "&";
-	if constexpr (std::is_rvalue_reference<T>::value)  std::cout << "&&";
+    if constexpr (std::is_const<TR>::value)            std::cout << "const ";
+    if constexpr (std::is_volatile<TR>::value)         std::cout << "volatile ";
+    if constexpr (std::is_lvalue_reference<T>::value)  std::cout << "&";
+    if constexpr (std::is_rvalue_reference<T>::value)  std::cout << "&&";
 }
 
 int&  foo_l();
@@ -18,24 +18,24 @@ int&& foo_x();
 int   foo_pr();
 
 void test_decltype()
-{	
-	int i = 0;
-	const int ci = 0;
-	int* p;
+{    
+    int i = 0;
+    const int ci = 0;
+    int* p;
 
-	print_type<decltype(i)>();
-	print_type<decltype((i))>();
-	print_type<decltype(ci)>();
-	print_type<decltype((ci))>();
-	print_type<decltype(p)>();
-	print_type<decltype((p))>();
-	print_type<decltype(static_cast<int&>(i))>();
-	print_type<decltype(static_cast<int&&>(i))>();
-	print_type<decltype(static_cast<int>(i))>();
-	print_type<decltype(foo_l())>();
-	print_type<decltype(foo_x())>();
-	print_type<decltype(foo_pr())>();
-	std::cout << "\n";
+    print_type<decltype(i)>();
+    print_type<decltype((i))>();
+    print_type<decltype(ci)>();
+    print_type<decltype((ci))>();
+    print_type<decltype(p)>();
+    print_type<decltype((p))>();
+    print_type<decltype(static_cast<int&>(i))>();
+    print_type<decltype(static_cast<int&&>(i))>();
+    print_type<decltype(static_cast<int>(i))>();
+    print_type<decltype(foo_l())>();
+    print_type<decltype(foo_x())>();
+    print_type<decltype(foo_pr())>();
+    std::cout << "\n";
 }
 
 struct A{};
@@ -51,11 +51,11 @@ auto f(const C& c) { return Z(); }
 
 void test_declval()
 {
-	decltype(f(std::declval<A>())) obj0;
-	decltype(f(std::declval<B>())) obj1;
-	decltype(f(std::declval<C>())) obj2;
-	obj0();
-	obj1();
-	obj2();
-	std::cout << "\n";
+    decltype(f(std::declval<A>())) obj0;
+    decltype(f(std::declval<B>())) obj1;
+    decltype(f(std::declval<C>())) obj2;
+    obj0();
+    obj1();
+    obj2();
+    std::cout << "\n";
 }
