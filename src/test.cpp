@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 
+void test_algbase();
 void test_ctad(); 
 void test_decltype();
 void test_declval();
@@ -48,6 +49,7 @@ void test_matrix_spiral();
 
 int main()
 {    
+    test_algbase();
 /*  test_ctad();
     test_decltype();
     test_declval();  
@@ -59,9 +61,9 @@ int main()
     test_hashmap(); 
     test_hashmap2(); 
     test_literal_operator(); 
-    test_memory(); */
+    test_memory(); 
     test_optional();  
-/*  test_parallel_algo();
+    test_parallel_algo();
     test_perfect_forwarding(); 
     test_placement_new0();
     test_placement_new1();
