@@ -1,5 +1,5 @@
 #include<iostream>
-#include<vector>
+#include<gtest/gtest.h>
 
 void test_algbase();
 void test_ctad(); 
@@ -8,6 +8,7 @@ void test_declval();
 void test_deleter();
 void test_error_handling();
 void test_filesystem();
+void test_gtest(int argc, char* argv[]);
 void test_hash();
 void test_hash2();
 void test_hashmap();
@@ -47,16 +48,17 @@ void test_anagram();
 void test_int2str();
 void test_matrix_spiral();
 
-int main()
+int main(int argc, char* argv[])
 {    
-    test_algbase();
-/*  test_ctad();
+/*  test_algbase();
+    test_ctad();
     test_decltype();
     test_declval();  
     test_deleter();
     test_error_handling();
-    test_filesystem();
-    test_hash();
+    test_filesystem(); */
+    test_gtest(argc, argv);
+/*  test_hash();
     test_hash2(); 
     test_hashmap(); 
     test_hashmap2(); 

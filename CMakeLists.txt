@@ -29,6 +29,7 @@ add_executable(Test ${SOURCES})       # for building executable
 target_link_libraries(Test -lstdc++fs) # filesystem lib
 target_link_libraries(Test -ldl) # dynamically loaded lib, for boost::stacktrace's dladdr()
 target_link_libraries(Test -lrt) # realtime extension lib, for shm_open()
+target_link_libraries(Test -lgtest)
 target_link_libraries(Test -lpthread)
 target_link_libraries(Test  -L/lib/x86_64-linux-gnu)
 
