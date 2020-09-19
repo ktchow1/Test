@@ -2,6 +2,7 @@
 #include<gtest/gtest.h>
 
 void test_algbase();
+void test_algbase_default_para();
 void test_ctad(); 
 void test_decltype();
 void test_declval();
@@ -13,6 +14,9 @@ void test_hash();
 void test_hash2();
 void test_hashmap();
 void test_hashmap2();
+void test_ipc_unnamed_pipe();
+void test_ipc_named_pipe(bool);
+void test_ipc_shared_memory();
 void test_literal_operator();
 void test_memory();
 void test_optional();
@@ -50,19 +54,26 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
+    char* p = new char[10];
+    p[12] = 'x';
+
 /*  test_algbase();
+    test_algbase_default_para();
     test_ctad();
     test_decltype();
     test_declval();  
     test_deleter();
     test_error_handling();
-    test_filesystem(); */
+    test_filesystem(); 
     test_gtest(argc, argv);
-/*  test_hash();
+    test_hash();
     test_hash2(); 
     test_hashmap(); 
-    test_hashmap2(); 
-    test_literal_operator(); 
+    test_hashmap2(); */
+//  test_ipc_unnamed_pipe();
+    test_ipc_named_pipe(argc > 1); // with argument for producer
+//  test_ipc_shared_memory();
+/*  test_literal_operator(); 
     test_memory(); 
     test_optional();  
     test_parallel_algo();

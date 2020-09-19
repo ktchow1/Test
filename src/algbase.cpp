@@ -36,3 +36,40 @@ void test_algbase()
     pC->run();
 
 }
+
+// *** Default parameter in virtual function *** //
+struct B
+{
+    virtual void fct(int n=10)
+    {
+        std::cout << "\nB::fct with para " << n << std::flush;
+    }
+};
+
+struct D : public B
+{
+    virtual void fct(int n=20)
+    {
+        std::cout << "\nD::fct with para " << n << std::flush;
+    }
+};
+
+void test_algbase_default_para()
+{
+    B b;
+    D d;
+    B* pb0 = &b;
+    B* pb1 = &d;
+    D* pd  = &d;
+    pb0->fct();
+    pb1->fct();
+    pd ->fct();
+}
+
+
+
+
+
+
+
+
