@@ -3,6 +3,7 @@
 
 void test_algbase();
 void test_algbase_default_para();
+void test_allocator();
 void test_ctad(); 
 void test_decltype();
 void test_declval();
@@ -58,22 +59,23 @@ int main(int argc, char* argv[])
     p[12] = 'x';
 
 /*  test_algbase();
-    test_algbase_default_para();
-    test_ctad();
+    test_algbase_default_para(); */
+    test_allocator();
+/*  test_ctad();
     test_decltype();
-    test_declval();  
+    test_declval(); */
     test_deleter();
-    test_error_handling();
+/*  test_error_handling();
     test_filesystem(); 
     test_gtest(argc, argv);
     test_hash();
     test_hash2(); 
     test_hashmap(); 
-    test_hashmap2(); */
+    test_hashmap2(); 
 //  test_ipc_unnamed_pipe();
-    test_ipc_named_pipe(argc > 1); // with argument for producer
+//  test_ipc_named_pipe(argc > 1); // with argument for producer
 //  test_ipc_shared_memory();
-/*  test_literal_operator(); 
+    test_literal_operator(); 
     test_memory(); 
     test_optional();  
     test_parallel_algo();
