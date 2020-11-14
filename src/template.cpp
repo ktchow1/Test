@@ -34,6 +34,25 @@ void test_template_alias()
     std::cout << "\n"; for (const auto& x : v) std::cout << x << " ";
     std::cout << "\n\n\n";
 }
+ 
+// *********************** //
+// *** template member *** //
+// *********************** //
+template<typename T> struct wrapper
+{
+    template<typename U> void fct() { std::cout << "template member"; }
+};
+
+template<typename T> void invoke_wrapper(wrapper<T>& x)
+{
+    x.template fct<std::string>();
+}
+
+void test_template_member()
+{
+    wrapper<int> x;
+    invoke_wrapper(x);
+}
 
 // ************************* //
 // *** template template *** //

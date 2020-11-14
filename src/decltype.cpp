@@ -59,3 +59,14 @@ void test_declval()
     obj2();
     std::cout << "\n";
 }
+
+
+void test_declval2()
+{
+    std::cout << "\n" << std::is_same<std::uint16_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;
+    std::cout << "\n" << std::is_same<std:: int16_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;
+    std::cout << "\n" << std::is_same<std::uint32_t, decltype(std::declval<std::uint32_t>() - 1)>::value; // true
+    std::cout << "\n" << std::is_same<std:: int32_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;
+    std::cout << "\n" << std::is_same<std::uint64_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;
+    std::cout << "\n" << std::is_same<std:: int64_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;
+}
