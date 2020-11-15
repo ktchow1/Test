@@ -1,5 +1,6 @@
 #include<iostream>
 #include<memory>
+#include<vector>
 
 struct resource
 {
@@ -120,5 +121,78 @@ void test_deleter()
      std::cout << "\n";
 }
 
+// ******************** //
+// *** Another test *** //
+// ******************** //
+#include<memory>
+struct X
+{
+    X()  { std::cout << "\nX::X() invoked";  }
+    ~X() { std::cout << "\nX::~X() invoked"; }
 
+    void print() const
+    {
+        std::cout << "\nX = " << a << " " << b << " " << c;
+    }
+
+    std::uint32_t a = 1;
+    std::uint32_t b = 2;
+    std::uint32_t c = 3;
+};
+
+struct X_deleter
+{
+    // It is responsible for calling X destructor.
+    void operator()(X* ptr)
+    {
+        ptr->~X();
+        std::cout << "\nspecific deleter is invoked";
+    }
+};
+
+template<typename T> struct general_deleter
+{
+    void operator()(T* ptr)
+    {
+        ptr->~T();
+        std::cout << "\ngeneral deleter is invoked";
+    }
+};
+
+template<typename C> struct container_deleter
+{
+    using T = typename C::value_type;
+    void operator()(T* ptr)
+    {
+        ptr->~T();
+        std::cout << "\ncontainer deleter is invoked";
+    }
+};
+
+void test_deleter2()
+{
+    std::cout << "\n\nmanual invoke destructor (double destruction)";
+    {
+        X x;
+        x.~X();
+    }
+    std::cout << "\n\nspecific deleter";
+    {
+    //  auto up0 = std::make_unique<X, X_deleter>(X_deleter{}); // make_unique does not work here
+        auto up0 = std::unique_ptr<X, X_deleter>(new X, X_deleter{});
+        up0->print();
+
+        auto up1 = std::unique_ptr<X, X_deleter>{};
+    }
+    std::cout << "\n\ngeneral deleter";
+    {
+        auto up = std::unique_ptr<X, general_deleter<X>>(new X, general_deleter<X>{});
+        up->print();
+    }
+    std::cout << "\n\ncontainer deleter";
+    {
+        auto up = std::unique_ptr<X, container_deleter<std::vector<X>>>(new X, container_deleter<std::vector<X>>{});
+        up->print();
+    }
+}
 

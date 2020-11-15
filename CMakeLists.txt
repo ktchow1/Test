@@ -18,7 +18,11 @@ include_directories(include /mnt/d/dev/boost_1_72_0)
 ##################
 ### (2) source ###
 ##################
-file(GLOB SOURCES "src/*.cpp" "src_hacker/*.cpp" "src_yubo/*.cpp")
+file(GLOB SOURCES
+     "src/*.cpp"
+     "src_hacker/*.cpp"
+     "src_yubo/*.cpp"
+)
 add_executable(Test ${SOURCES})       # for building executable
 # add_library(Test STATIC ${SOURCES}) # for building static lib .a
 # add_library(Test SHARED ${SOURCES}) # for building shared lib .so

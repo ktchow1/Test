@@ -2,6 +2,9 @@
 #include<vector>
 #include<list>
 
+// *********************** //
+// *** About allocator *** //
+// *********************** //
 template<typename T> class my_allocator
 {
 public: // STL requires the following typedef
@@ -50,3 +53,4 @@ void test_allocator()
 
     std::cout << "\n\n";
 }
+
