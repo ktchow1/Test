@@ -38,7 +38,7 @@ struct my_hash1
     }
 };
 
-void test_hash()
+void test_hashfct0()
 {
     std::unordered_map<std::string, int, my_hash1> map; map.reserve(20);
     map["abc"] = 1;
@@ -61,7 +61,7 @@ void test_hash()
     std::cout << "\n\n\n";
 }
 
-void test_hash2()
+void test_hashfct1()
 {
     std::hash<unsigned char> h0;
     my_hash h1;

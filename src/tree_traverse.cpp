@@ -24,7 +24,7 @@ template<typename T> struct node
     node<T>* rhs = nullptr;
 };
 
-enum tranverse_order
+enum traverse_order
 {
     in_order_does_not_work,
     in_order,
@@ -33,7 +33,7 @@ enum tranverse_order
 };
 
 template<typename T>
-void DFS_recursive(const node<T>* root, tranverse_order order)
+void DFS_recursive(const node<T>* root, traverse_order order)
 {
     if (root)
     {
@@ -58,7 +58,7 @@ void DFS_recursive(const node<T>* root, tranverse_order order)
     }
 }
 
-template<typename T> void DFS_iterative(const node<T>* root, tranverse_order order)
+template<typename T> void DFS_iterative(const node<T>* root, traverse_order order)
 {
     std::stack<const node<T>*> s;
     if (!root) return;     
@@ -176,7 +176,7 @@ inline node<int>* generate_tree()
     return root;
 }
 
-void test_tree()
+void test_tree_traverse()
 {
     node<int>* root = generate_tree();
     std::cout << "\nDFS "; DFS_recursive(root, pre_order);

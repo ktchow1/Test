@@ -43,7 +43,7 @@ void f2() { f3(); }
 void f1() { f2(); }
 void f0() { f1(); }
 
-void test_error_handling()
+void test_backtrace()
 {
     set_handlers();
     try
@@ -59,10 +59,5 @@ void test_error_handling()
         });
         std::terminate();
     }    
-}
-
-void test_error_handling2()
-{
-    
 }
 

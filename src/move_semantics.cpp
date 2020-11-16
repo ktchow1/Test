@@ -49,7 +49,7 @@ public:
     Y y;
 };
 
-void test_move()
+void test_move_semantics()
 {
     T t;
     t.print();

@@ -2,29 +2,28 @@
 #include<gtest/gtest.h>
 
 void test_algbase();
-void test_algbase_default_para();
 void test_allocator();
+void test_backtrace();
 void test_casting();
 void test_casting_shared_ptr();
 void test_ctad(); 
 void test_decltype();
-void test_declval();
-void test_declval2();
+void test_declval0();
+void test_declval1();
 void test_deleter();
-void test_deleter2();
-void test_error_handling();
+void test_deleter_for_pool();
 void test_filesystem();
 void test_gtest(int argc, char* argv[]);
-void test_hash();
-void test_hash2();
-void test_hashmap();
-void test_hashmap2();
+void test_hashfct0();
+void test_hashfct1();
+void test_hashmap0();
+void test_hashmap1();
 void test_ipc_unnamed_pipe();
 void test_ipc_named_pipe(bool);
 void test_ipc_shared_memory();
 void test_literal_operator();
-void test_memory();
-void test_move();
+void test_move_semantics();
+void test_new_operator();
 void test_optional();
 void test_parallel_algo();
 void test_perfect_forwarding();
@@ -32,14 +31,13 @@ void test_placement_new0();
 void test_placement_new1();
 void test_placement_new2();
 void test_pod();
-void test_rand();
+void test_randgen();
 void test_sfinae0();
 void test_sfinae1();
 void test_sfinae2();
 void test_sfinae_class();
-void test_sfinae_concept();
+void test_sfinae_function();
 void test_singleton();
-void test_size();
 void test_STL_constraint0();
 void test_STL_constraint1();
 void test_STL_constraint2();
@@ -50,7 +48,7 @@ void test_template_template();
 void test_template_common_type();
 void test_template_zip_with();
 void test_timer_resolution();
-void test_tree();
+void test_tree_traverse();
 void test_tuple();
 void test_unique_ptr();
 void test_unique_ptr_to_noncopyable();
@@ -71,30 +69,29 @@ int main(int argc, char* argv[])
     char* p = new char[10];
     p[12] = 'x';
 
-/*  test_algbase();
-    test_algbase_default_para(); 
+    test_algbase();
     test_allocator();
+//  test_backtrace();
     test_casting();
     test_casting_shared_ptr();
     test_ctad();
     test_decltype();
-    test_declval(); */ 
-    test_declval2(); 
-/*  test_deleter();
-    test_deleter2();
-    test_error_handling();
+    test_declval0(); 
+    test_declval1(); 
+    test_deleter();
+    test_deleter_for_pool();
     test_filesystem(); 
     test_gtest(argc, argv);
-    test_hash();
-    test_hash2(); 
-    test_hashmap(); 
-    test_hashmap2(); 
-    test_ipc_unnamed_pipe();
-    test_ipc_named_pipe(argc > 1); // with argument for producer
-    test_ipc_shared_memory();
+    test_hashfct0();
+    test_hashfct1(); 
+    test_hashmap0(); 
+    test_hashmap1(); 
+//  test_ipc_unnamed_pipe();
+//  test_ipc_named_pipe(argc > 1); // with argument for producer
+//  test_ipc_shared_memory();
     test_literal_operator(); 
-    test_memory(); 
-    test_move(); 
+    test_move_semantics(); 
+    test_new_operator(); 
     test_optional();  
     test_parallel_algo();
     test_perfect_forwarding(); 
@@ -102,14 +99,13 @@ int main(int argc, char* argv[])
     test_placement_new1();
     test_placement_new2(); 
     test_pod();
-    test_rand();    
+    test_randgen();    
     test_sfinae0();
     test_sfinae1();
     test_sfinae2(); 
     test_sfinae_class(); 
-    test_sfinae_concept();
+    test_sfinae_function();
     test_singleton();
-    test_size(); 
     test_STL_constraint0();
     test_STL_constraint1();
     test_STL_constraint2();
@@ -119,8 +115,8 @@ int main(int argc, char* argv[])
     test_template_template(); 
     test_template_common_type();
     test_template_zip_with(); 
-    test_timer_resolution();
-    test_tree(); 
+//  test_timer_resolution();
+    test_tree_traverse(); 
     test_tuple();     
     test_unique_ptr(); 
     test_unique_ptr_to_noncopyable();
@@ -129,7 +125,7 @@ int main(int argc, char* argv[])
     test_variant_and_any();  
     test_variant_overloading_lambda();
     test_variant_aggregate_init();
-    test_variant_CTAD(); */
+    test_variant_CTAD(); 
 
     // hackersrank
 //  test_anagram();    

@@ -22,7 +22,7 @@ template<std::derived_from<base> T> void g(const T&)
 {
     std::cout << "\ng : derived class implementation";
 }
-void test_sfinae_concept()
+void test_sfinae_function()
 {
     derived x0;
     non_derived x1;

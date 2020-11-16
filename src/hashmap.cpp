@@ -84,7 +84,7 @@ template<typename K, typename V> struct hashmap
     cell* ptr = nullptr;
 };
 
-void test_hashmap()
+void test_hashmap0()
 {
     hashmap<std::string, int> h;
     std::cout << "\nset " << std::flush; h.set("axx", 101);
@@ -106,7 +106,7 @@ void test_hashmap()
     std::cout << "\n\n\n";
 }
 
-void test_hashmap2()
+void test_hashmap1()
 {
     std::unordered_multimap<std::string, int> map;
 

@@ -2,6 +2,84 @@
 #include<memory>
 #include<vector>
 
+// *************** //
+// *** Deleter *** //
+// *************** //
+#include<memory>
+struct X
+{
+    X()  { std::cout << "\nX::X() invoked";  }
+    ~X() { std::cout << "\nX::~X() invoked"; }
+
+    void print() const
+    {
+        std::cout << "\nX = " << a << " " << b << " " << c;
+    }
+
+    std::uint32_t a = 1;
+    std::uint32_t b = 2;
+    std::uint32_t c = 3;
+};
+
+struct X_deleter
+{
+    // It is responsible for calling X destructor.
+    void operator()(X* ptr)
+    {
+        ptr->~X();
+        std::cout << "\nspecific deleter is invoked";
+    }
+};
+
+template<typename T> struct general_deleter
+{
+    void operator()(T* ptr)
+    {
+        ptr->~T();
+        std::cout << "\ngeneral deleter is invoked";
+    }
+};
+
+template<typename C> struct container_deleter
+{
+    using T = typename C::value_type;
+    void operator()(T* ptr)
+    {
+        ptr->~T();
+        std::cout << "\ncontainer deleter is invoked";
+    }
+};
+
+void test_deleter()
+{
+    std::cout << "\n\nmanual invoke destructor (double destruction)";
+    {
+        X x;
+        x.~X();
+    }
+    std::cout << "\n\nspecific deleter";
+    {
+    //  auto up0 = std::make_unique<X, X_deleter>(X_deleter{}); // make_unique does not work here
+        auto up0 = std::unique_ptr<X, X_deleter>(new X, X_deleter{});
+        up0->print();
+
+        auto up1 = std::unique_ptr<X, X_deleter>{};
+    }
+    std::cout << "\n\ngeneral deleter";
+    {
+        auto up = std::unique_ptr<X, general_deleter<X>>(new X, general_deleter<X>{});
+        up->print();
+    }
+    std::cout << "\n\ncontainer deleter";
+    {
+        auto up = std::unique_ptr<X, container_deleter<std::vector<X>>>(new X, container_deleter<std::vector<X>>{});
+        up->print();
+    }
+}
+
+// ********************************* //
+// *** Deleter for resource pool *** //
+// ********************************* //
 struct resource
 {
     resource(std::uint32_t a_=1, std::uint32_t b_=2, std::uint32_t c_=3) : a(a_),b(b_),c(c_)
@@ -89,18 +167,18 @@ private:
     bool flags[N]; // true for available
 }; 
 
-void test_deleter()
+void test_deleter_for_pool()
 {
-     auto x = std::make_unique<resource>(1,2,3);
+     auto x = std::make_unique<resource>((std::uint32_t)1,(std::uint32_t)2,(std::uint32_t)3);
      std::cout << "\n" << *x;
      std::cout << "\n";
 
      resource_pool<5> pool;
-     auto x0 = pool.make_unique(11,12,13);
-     auto x1 = pool.make_unique(21,22,23);
+     auto x0 = pool.make_unique((std::uint32_t)11,(std::uint32_t)12,(std::uint32_t)13);
+     auto x1 = pool.make_unique((std::uint32_t)21,(std::uint32_t)22,(std::uint32_t)23);
      {
-         auto x2 = pool.make_unique(31,32,33);
-         auto x3 = pool.make_unique(41,42,43);
+         auto x2 = pool.make_unique((std::uint32_t)31,(std::uint32_t)32,(std::uint32_t)33);
+         auto x3 = pool.make_unique((std::uint32_t)41,(std::uint32_t)42,(std::uint32_t)43);
          pool.debug();
          std::cout << "\n";
      }
@@ -108,10 +186,10 @@ void test_deleter()
      std::cout << "\n";
 
      auto x4(std::move(x1)); 
-     auto x5 = pool.make_unique(51,52,53);
-     auto x6 = pool.make_unique(61,62,63);
-     auto x7 = pool.make_unique(71,72,73);
-     auto x8 = pool.make_unique(81,82,83);
+     auto x5 = pool.make_unique((std::uint32_t)51,(std::uint32_t)52,(std::uint32_t)53);
+     auto x6 = pool.make_unique((std::uint32_t)61,(std::uint32_t)62,(std::uint32_t)63);
+     auto x7 = pool.make_unique((std::uint32_t)71,(std::uint32_t)72,(std::uint32_t)73);
+     auto x8 = pool.make_unique((std::uint32_t)81,(std::uint32_t)82,(std::uint32_t)83);
      pool.debug();
      std::cout << "\n";
      
@@ -121,78 +199,4 @@ void test_deleter()
      std::cout << "\n";
 }
 
-// ******************** //
-// *** Another test *** //
-// ******************** //
-#include<memory>
-struct X
-{
-    X()  { std::cout << "\nX::X() invoked";  }
-    ~X() { std::cout << "\nX::~X() invoked"; }
-
-    void print() const
-    {
-        std::cout << "\nX = " << a << " " << b << " " << c;
-    }
-
-    std::uint32_t a = 1;
-    std::uint32_t b = 2;
-    std::uint32_t c = 3;
-};
-
-struct X_deleter
-{
-    // It is responsible for calling X destructor.
-    void operator()(X* ptr)
-    {
-        ptr->~X();
-        std::cout << "\nspecific deleter is invoked";
-    }
-};
-
-template<typename T> struct general_deleter
-{
-    void operator()(T* ptr)
-    {
-        ptr->~T();
-        std::cout << "\ngeneral deleter is invoked";
-    }
-};
-
-template<typename C> struct container_deleter
-{
-    using T = typename C::value_type;
-    void operator()(T* ptr)
-    {
-        ptr->~T();
-        std::cout << "\ncontainer deleter is invoked";
-    }
-};
-
-void test_deleter2()
-{
-    std::cout << "\n\nmanual invoke destructor (double destruction)";
-    {
-        X x;
-        x.~X();
-    }
-    std::cout << "\n\nspecific deleter";
-    {
-    //  auto up0 = std::make_unique<X, X_deleter>(X_deleter{}); // make_unique does not work here
-        auto up0 = std::unique_ptr<X, X_deleter>(new X, X_deleter{});
-        up0->print();
-
-        auto up1 = std::unique_ptr<X, X_deleter>{};
-    }
-    std::cout << "\n\ngeneral deleter";
-    {
-        auto up = std::unique_ptr<X, general_deleter<X>>(new X, general_deleter<X>{});
-        up->print();
-    }
-    std::cout << "\n\ncontainer deleter";
-    {
-        auto up = std::unique_ptr<X, container_deleter<std::vector<X>>>(new X, container_deleter<std::vector<X>>{});
-        up->print();
-    }
-}
 

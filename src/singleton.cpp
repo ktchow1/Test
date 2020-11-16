@@ -142,15 +142,3 @@ void test_singleton()
     print_singleton(3, singleton3::get_instance());
 }
 
-void test_size()
-{
-    std::cout << "\nsizeof(char)      " << sizeof(char);       // 1byte  
-    std::cout << "\nsizeof(short)     " << sizeof(short);      // 2bytes
-    std::cout << "\nsizeof(long)      " << sizeof(long);       // 4bytes
-    std::cout << "\nsizeof(long long) " << sizeof(long long);  // 8bytes
-    std::cout << "\nsizeof(int)       " << sizeof(int);        // 4bytes
-    std::cout << "\nsizeof(float)     " << sizeof(float);      // 4bytes = 1 bit sign +  8 bits exponential + 23 bits significand
-    std::cout << "\nsizeof(double)    " << sizeof(double);     // 8bytes = 1 bit sign + 11 bits exponential + 52 bits significand
-}
-
-

@@ -3,7 +3,7 @@
 void test_gtest(int argc, char* argv[])
 {
     testing::InitGoogleTest(&argc, argv);
-    RUN_ALL_TESTS();
+    [[maybe_unused]] auto temp = RUN_ALL_TESTS();
 }
 
 TEST(sample_suite0, case_boolean)

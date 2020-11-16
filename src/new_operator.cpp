@@ -25,7 +25,7 @@ struct my_class
     std::uint32_t c=3;
 };
 
-void test_memory()
+void test_new_operator()
 {
     auto* p0 = new my_class;
     p0->debug();

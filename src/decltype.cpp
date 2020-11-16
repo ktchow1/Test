@@ -2,6 +2,9 @@
 #include<utility>
 #include<type_traits>
 
+// **************** //
+// *** decltype *** //
+// **************** //
 template<typename T> void print_type()
 {
     typedef typename std::remove_reference<T>::type TR;    
@@ -38,6 +41,9 @@ void test_decltype()
     std::cout << "\n";
 }
 
+// *************** //
+// *** declval *** //
+// *************** //
 struct A{};
 struct B{};
 struct C{};
@@ -49,7 +55,7 @@ auto f(const A& a) { return X(); }
 auto f(const B& b) { return Y(); }
 auto f(const C& c) { return Z(); }
 
-void test_declval()
+void test_declval0()
 {
     decltype(f(std::declval<A>())) obj0;
     decltype(f(std::declval<B>())) obj1;
@@ -60,8 +66,7 @@ void test_declval()
     std::cout << "\n";
 }
 
-
-void test_declval2()
+void test_declval1()
 {
     std::cout << "\n" << std::is_same<std::uint16_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;
     std::cout << "\n" << std::is_same<std:: int16_t, decltype(std::declval<std::uint32_t>() - std::declval<std::uint32_t>())>::value;

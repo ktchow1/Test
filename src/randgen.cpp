@@ -1,7 +1,7 @@
 #include<iostream>
 #include<random>
 
-void test_rand()
+void test_randgen()
 {
     std::default_random_engine engine;
     std::normal_distribution<double> normal(0,1);    
