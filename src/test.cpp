@@ -68,9 +68,9 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
-//  test_concepts();
-    test_sfinae_is_base_implement();
-    test_sfinae_is_base_usage();
+    test_concepts();
+//  test_sfinae_is_base_implement();
+//  test_sfinae_is_base_usage();
     
     bool run_all = false;
     if (run_all)
