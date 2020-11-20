@@ -5,36 +5,6 @@
 #include<string>
 #include<type_traits>
 
-// alias for value (keyword : constexpr)
-template<typename T, typename U>
-constexpr bool is_same = std::is_same<T, U>::value;
-
-// alias for type (keyword : using)
-template<typename T> using add_ref = T&;
-template<typename T> using del_ref = typename std::remove_reference<T>::type;
-
-void test_template_alias()
-{
-    std::cout << "\n" << std::is_same<int, std::string>::value;
-    std::cout << "\n" << std::is_same<int, int>::value;
-    std::cout << "\n" << is_same<int, std::string>;
-    std::cout << "\n" << is_same<int, int>;
-    std::cout << "\n" << is_same<int, int&>;
-    std::cout << "\n" << is_same<int, del_ref<int&>>;
-
-    std::vector<int> v{ 1,2,3,4,5,6,7 };
-    std::cout << "\n"; for (const auto& x : v) std::cout << x << " ";
-    int x0 = v[3]; x0 = 9;
-    std::cout << "\n"; for (const auto& x : v) std::cout << x << " ";
-    int& x1 = v[3]; x1 = 9;
-    std::cout << "\n"; for (const auto& x : v) std::cout << x << " ";
-    del_ref<int&> x2 = v[4]; x2 = 9;
-    std::cout << "\n"; for (const auto& x : v) std::cout << x << " ";
-    add_ref<int> x3 = v[4]; x3 = 9;
-    std::cout << "\n"; for (const auto& x : v) std::cout << x << " ";
-    std::cout << "\n\n\n";
-}
- 
 // *********************** //
 // *** template member *** //
 // *********************** //

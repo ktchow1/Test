@@ -44,11 +44,13 @@ void test_STL_constraint0();
 void test_STL_constraint1();
 void test_STL_constraint2();
 void test_structured_binding();
-void test_template_alias();
-void test_template_member();
+void test_template_member();   
 void test_template_template(); 
 void test_template_common_type();
 void test_template_zip_with();
+void test_template_traits();
+void test_template_AFT();
+void test_template_AFT_invocable();
 void test_timer_resolution();
 void test_tree_traverse();
 void test_tuple();
@@ -68,10 +70,10 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
-    test_concepts();
-//  test_sfinae_is_base_implement();
-//  test_sfinae_is_base_usage();
-    
+    test_template_traits(); 
+    test_template_AFT();
+    test_template_AFT_invocable();
+
     bool run_all = false;
     if (run_all)
     {
@@ -118,11 +120,13 @@ int main(int argc, char* argv[])
         test_STL_constraint1();
         test_STL_constraint2();
         test_structured_binding(); 
-        test_template_alias(); 
         test_template_member();
         test_template_template(); 
         test_template_common_type();
         test_template_zip_with(); 
+        test_template_traits();
+        test_template_AFT();
+        test_template_AFT_invocable();
     //  test_timer_resolution();
         test_tree_traverse(); 
         test_tuple();     
