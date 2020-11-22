@@ -70,9 +70,7 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
-    test_template_traits(); 
-    test_template_AFT();
-    test_template_AFT_invocable();
+    test_concepts();
 
     bool run_all = false;
     if (run_all)
