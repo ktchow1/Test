@@ -33,6 +33,7 @@ void test_placement_new1();
 void test_placement_new2();
 void test_pod();
 void test_randgen();
+void test_range();
 void test_sfinae0();
 void test_sfinae1();
 void test_sfinae2();
@@ -70,7 +71,7 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
-    test_concepts();
+    test_range();
 
     bool run_all = false;
     if (run_all)
@@ -107,6 +108,7 @@ int main(int argc, char* argv[])
         test_placement_new2(); 
         test_pod();
         test_randgen();    
+        test_range();    
         test_sfinae0();
         test_sfinae1();
         test_sfinae2(); 
