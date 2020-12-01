@@ -14,6 +14,8 @@ void test_declval1();
 void test_deleter();
 void test_deleter_for_pool();
 void test_filesystem();
+void test_function_array_arg();
+void test_function_macro();
 void test_gtest(int argc, char* argv[]);
 void test_hashfct0();
 void test_hashfct1();
@@ -33,7 +35,7 @@ void test_placement_new1();
 void test_placement_new2();
 void test_pod();
 void test_randgen();
-void test_range();
+void test_range_lib();
 void test_sfinae0();
 void test_sfinae1();
 void test_sfinae2();
@@ -43,7 +45,8 @@ void test_sfinae_is_base_usage();
 void test_singleton();
 void test_STL_constraint0();
 void test_STL_constraint1();
-void test_STL_constraint2();
+void test_STL_constraint2(); /*
+void test_STL_constraint3();  */
 void test_structured_binding();
 void test_template_member();   
 void test_template_template(); 
@@ -71,7 +74,7 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
-    test_range();
+    test_range_lib();
 
     bool run_all = false;
     if (run_all)
@@ -89,6 +92,8 @@ int main(int argc, char* argv[])
         test_deleter();
         test_deleter_for_pool();
         test_filesystem(); 
+        test_function_array_arg();
+        test_function_macro();
         test_gtest(argc, argv);
         test_hashfct0();
         test_hashfct1(); 
@@ -108,7 +113,7 @@ int main(int argc, char* argv[])
         test_placement_new2(); 
         test_pod();
         test_randgen();    
-        test_range();    
+        test_range_lib();    
         test_sfinae0();
         test_sfinae1();
         test_sfinae2(); 
@@ -119,6 +124,7 @@ int main(int argc, char* argv[])
         test_STL_constraint0();
         test_STL_constraint1();
         test_STL_constraint2();
+    //  test_STL_constraint3();
         test_structured_binding(); 
         test_template_member();
         test_template_template(); 

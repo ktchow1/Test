@@ -106,6 +106,12 @@ struct S;
 S  create_S();
 S& static_S();
 
+struct SS
+{
+    char dummy[100];
+    S* ptr;
+};
+
 void test_STL_constraint2()
 {
 //  S x;                                                 // compile error : incomplete type
@@ -136,6 +142,7 @@ void test_STL_constraint2()
     // ********************* //
 //  std::unordered_map<int, S> h;                        // compile error : incomplete type
 //  std::unordered_map<int, S>::iterator k = h.begin();  // compile error : incomplete type
+    std::unordered_map<int, SS> h;                       // compile OK
 }
 
 struct S
