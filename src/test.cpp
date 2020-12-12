@@ -21,6 +21,9 @@ void test_hashfct0();
 void test_hashfct1();
 void test_hashmap0();
 void test_hashmap1();
+void test_index_seq();
+void test_index_seq2();
+void test_index_seq3();
 void test_ipc_unnamed_pipe();
 void test_ipc_named_pipe(bool);
 void test_ipc_shared_memory();
@@ -74,7 +77,9 @@ void test_matrix_spiral();
 
 int main(int argc, char* argv[])
 {    
-    test_range_lib();
+    test_index_seq();
+    test_index_seq2();
+    test_index_seq3();
 
     bool run_all = false;
     if (run_all)
@@ -99,6 +104,9 @@ int main(int argc, char* argv[])
         test_hashfct1(); 
         test_hashmap0(); 
         test_hashmap1(); 
+        test_index_seq();
+        test_index_seq2();
+        test_index_seq3();
     //  test_ipc_unnamed_pipe();
     //  test_ipc_named_pipe(argc > 1); // with argument for producer
     //  test_ipc_shared_memory();

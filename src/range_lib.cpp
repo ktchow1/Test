@@ -16,25 +16,8 @@ namespace alg
     public:
         using T = typename C::value_type;
 
-        template<typename F>
-        lazy_view<C>& operator | (filter<F> x)
+        lazy_view(C& container) : i0(container.begin()), i1(container.end()) 
         {
-            predicate = x.impl; 
-            return *this;
-        }
-
-        template<typename F>
-        lazy_view<C>& operator | (transform<F> x)
-        {
-            transformation = x.impl; 
-            return *this;
-        }
-
-        lazy_view<C>& operator | (take x)
-        {
-            taken_count = 0;
-            taken_total = x.impl; 
-            return *this;
         }
 
         // casting operator
@@ -62,15 +45,35 @@ namespace alg
         std::uint32_t           taken_count;
         std::uint32_t           taken_total;
     };
-    
+     
     template<typename C, typename F>
-    lazy_view<C> operator | (C& container, filter<F> x)
+    lazy_view<C> operator | (C& lhs, filter<F> rhs)
     {
-        lazy_view<C> output;
-        output.i0 = container.begin();
-        output.i1 = container.end();
-        output.predicate = x.impl;
+        lazy_view<C> output(lhs);
+        output.predicate = rhs.impl; 
         return output;
+    }
+
+    template<typename C, typename F>
+    lazy_view<C> operator | (lazy_view<C> lhs, filter<F> rhs)
+    {
+        lhs.predicate = rhs.impl; 
+        return lhs;
+    }
+
+    template<typename C, typename F>
+    lazy_view<C> operator | (lazy_view<C> lhs, transform<F> rhs)
+    {
+        lhs.transformation = rhs.impl; 
+        return lhs;
+    }
+
+    template<typename C>
+    lazy_view<C> operator | (lazy_view<C> lhs, take rhs)
+    {
+        lhs.taken_count = 0;
+        lhs.taken_total = rhs.impl; 
+        return lhs;
     }
 }
 
@@ -95,11 +98,9 @@ void test_range_lib()
         vec3.push_back(x);
     }
 
-    // My algo implementation is not good enough :
-    // 1. does not support "auto" vec4
-    // 2. does not support "auto" argument in lambdas
-    std::vector<std::uint32_t> vec4 = vec0 | alg::filter   ([](const std::uint32_t& x) { return x%2==1; } )
-                                           | alg::transform([](const std::uint32_t& x) { return x*2;    } ) 
+    // My algo implementation does not support "auto" vec4.
+    std::vector<std::uint32_t> vec4 = vec0 | alg::filter   ([](const auto& x) { return x%2==1; } )
+                                           | alg::transform([](const auto& x) { return x*2;    } ) 
                                            | alg::take(10); 
 
     std::cout << "\nvec0 = "; for(const auto& x:vec0) std::cout << x << " ";
