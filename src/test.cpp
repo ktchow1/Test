@@ -37,6 +37,8 @@ void test_placement_new0();
 void test_placement_new1();
 void test_placement_new2();
 void test_pod();
+void test_pod_string();
+void test_pod_T();
 void test_randgen();
 void test_range_lib();
 void test_sfinae0();
@@ -72,14 +74,17 @@ void test_variant_CTAD();
 
 // hackersrank
 void test_anagram();
-void test_int2str();
-void test_matrix_spiral();
+void test_int2str();        // citadel
+void test_matrix_spiral();  // citadel
+void test_tree_checker();   // optiver
 
 int main(int argc, char* argv[])
 {    
     test_index_seq();
     test_index_seq2();
     test_index_seq3();
+    test_pod_string();
+    test_pod_T();
 
     bool run_all = false;
     if (run_all)
@@ -120,6 +125,8 @@ int main(int argc, char* argv[])
         test_placement_new1();
         test_placement_new2(); 
         test_pod();
+        test_pod_string();
+        test_pod_T();
         test_randgen();    
         test_range_lib();    
         test_sfinae0();
@@ -158,6 +165,7 @@ int main(int argc, char* argv[])
 //  test_anagram();    
 //  test_int2str();
 //  test_matrix_spiral(); 
+    test_tree_checker();
     std::cout << "\n\n\n";
     return 0;
 }
