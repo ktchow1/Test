@@ -78,13 +78,12 @@ void test_int2str();        // citadel
 void test_matrix_spiral();  // citadel
 void test_tree_checker();   // optiver
 
+// psql
+void test_psql01();
+
 int main(int argc, char* argv[])
 {    
-    test_index_seq();
-    test_index_seq2();
-    test_index_seq3();
-    test_pod_string();
-    test_pod_T();
+    test_psql01();
 
     bool run_all = false;
     if (run_all)
@@ -165,7 +164,7 @@ int main(int argc, char* argv[])
 //  test_anagram();    
 //  test_int2str();
 //  test_matrix_spiral(); 
-    test_tree_checker();
+//  test_tree_checker();
     std::cout << "\n\n\n";
     return 0;
 }

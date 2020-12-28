@@ -61,15 +61,16 @@ public:
             
             // In the following, whenever we encounter error, can we just stop processing and return that error?
             // No, because there may be another error with higher priority lying at the latter part of the input string.
-            if      	(tree[xi].lhs == empty)		tree[xi].lhs = y;
-            else if	(tree[xi].lhs == y)		errors[1] = true; // duplicated
-            else if	(tree[xi].rhs == empty)		tree[xi].rhs = y;
-            else if	(tree[xi].rhs == y)		errors[1] = true; // duplicated
-            else   						errors[2] = true; // more than 2 children
+
+            if      (tree[xi].lhs == empty)      tree[xi].lhs = y;
+            else if	(tree[xi].lhs == y)          errors[1] = true; // duplicated
+            else if	(tree[xi].rhs == empty)      tree[xi].rhs = y;
+            else if	(tree[xi].rhs == y)          errors[1] = true; // duplicated
+            else                                 errors[2] = true; // more than 2 children
             
-            if      	(tree[yi].parent == empty)	tree[yi].parent = x;
-            else if	(tree[yi].parent == x)		errors[1] = true; // duplicated (this checking is redundant)
-            else     					errors[4] = true; // more than 1 parent, i.e. not a tree   
+            if      (tree[yi].parent == empty)   tree[yi].parent = x;
+            else if	(tree[yi].parent == x)       errors[1] = true; // duplicated (this checking is redundant)
+            else                                 errors[4] = true; // more than 1 parent, i.e. not a tree   
         }
         
         // Final root checking
@@ -87,11 +88,11 @@ public:
     
     std::string get_output() const
     {
-        if (errors[0]) return "E1";
-        if (errors[1]) return "E2";
-        if (errors[2]) return "E3";
-        if (errors[3]) return "E4";
-        if (errors[4]) return "E5";
+        if (errors[0]) return "E1"; // incorrect string format
+        if (errors[1]) return "E2"; // duplicated edge
+        if (errors[2]) return "E3"; // a node having more than two children
+        if (errors[3]) return "E4"; // a tree having more than one root
+        if (errors[4]) return "E5"; // a tree having no root OR a node having more than one parent
         
         std::stringstream ss;
         ss << "(";
@@ -169,3 +170,5 @@ void test_tree_checker()
     std::cout << "\nprint tree : " << chk.get_output();
     std::cout << "\n\n";
 }
+
+
