@@ -2,9 +2,10 @@
 #include<sstream>
 #include<string>
 #include<array>
+#include<queue>
+#include<unordered_set>
+#include<unordered_map>
 
-std::uint32_t c2i(char c) { return c-'A'; }
-char i2c(std::uint32_t i) { return 'A'+i; }
 
 // ******************************************************************************************************* //
 // Root is the ultimate parent of all nodes.
@@ -35,34 +36,26 @@ char i2c(std::uint32_t i) { return 'A'+i; }
 class tree_checker
 {
 public:
-    tree_checker()
+    tree_checker() : root(empty)
     {
-        clear();
+        for(auto& x:errors) x = false;
     }
-    
-    void clear()
-    {
-        root = empty;
-        for(auto& x:tree)
-        {
-            x.parent = empty;
-            x.lhs = empty;
-            x.rhs = empty;
-        }
-        for(auto& x:errors)
-        {
-            x = false;
-        }
-    }
-    
+
     void debug() const
     {
-        std::cout << "\n[tree-debug]";
-        for(std::uint32_t n=0; n!=26; ++n)
+        std::cout << "\n[tree]";
+        for(const auto& x:tree)
         {
-            if (n % 6 ==0) std::cout << "\n";
-            std::cout << (int)n << " : " << tree[n].parent << tree[n].lhs << tree[n].rhs << ",  ";
+            std::cout << "\n" << x.first << " : ";
+            std::cout << " parents=[";
+            for(const auto& y:x.second.parents) std::cout << y;
+            std::cout << "] children=[";
+            for(const auto& y:x.second.children) std::cout << y;
+            std::cout << "] label = " << x.second.label;
+            std::cout << ", lhs = " << x.second.lhs_child;
+            std::cout << ", rhs = " << x.second.rhs_child;
         }
+
         std::cout << "\nErrors : ";
         for(const auto& x:errors)
         {
@@ -72,43 +65,83 @@ public:
     
     bool load(const std::string& str)
     {
+        // pass through input string
         std::uint32_t n=0; 
         while(n<str.size())
         {
-            char x; char y;
+            char x; 
+            char y;
+
+            // *** E1 check *** //
             if (!extract_one_edge(str, n, x, y))
             {
                 errors[0] = true;
-                return false; // stop processing and return E1
+                return false; 
             }
             
-            std::uint32_t xi = c2i(x);
-            std::uint32_t yi = c2i(y);
-            
-            // In the following, whenever we encounter error, can we just stop processing and return that error?
-            // No, because there may be another error with higher priority lying at the latter part of the input string.
-
-            if      (tree[xi].lhs == empty)      tree[xi].lhs = y;
-            else if	(tree[xi].lhs == y)          errors[1] = true; // duplicated
-            else if	(tree[xi].rhs == empty)      tree[xi].rhs = y;
-            else if	(tree[xi].rhs == y)          errors[1] = true; // duplicated
-            else                                 errors[2] = true; // more than 2 children
-            
-            if      (tree[yi].parent == empty)   tree[yi].parent = x;
-            else if	(tree[yi].parent == x)       errors[1] = true; // duplicated (this checking is redundant)
-            else                                 errors[4] = true; // more than 1 parent, i.e. not a tree   
-        }
-        
-        // Final root checking
-        for(std::uint32_t m=0; m!=26; ++m)
-        {
-            if (tree[m].parent == empty && (tree[m].lhs!=empty || tree[m].rhs!=empty))
+            // *** E2 check (fill tree-struct) *** //
+            auto iter0 = tree.find(x);
+            if (iter0 == tree.end())
             {
-                if (root == empty) root = i2c(m);
+                tree[x] = info{empty,y,empty,{},{y}};
+            }
+            else
+            {
+                auto i  = iter0->second.children.find(y);
+                if  (i == iter0->second.children.end())     iter0->second.children.insert(y);
+                else                                        errors[1] = true;
+
+                // For final output
+                if      (iter0->second.lhs_child == empty)  iter0->second.lhs_child = y;
+                else if (iter0->second.rhs_child == empty)  iter0->second.rhs_child = y;
+            }
+
+            auto iter1 = tree.find(y);
+            if (iter1 == tree.end())
+            {
+                tree[y] = info{empty,empty,empty,{x},{}};
+            }
+            else
+            {
+                auto i  = iter1->second.parents.find(x);
+                if  (i == iter1->second.parents.end())      iter1->second.parents.insert(x);
+                else                                        errors[1] = true; // redundant
+            }
+        }
+
+        for(const auto& x:tree)
+        {
+            // *** E3 check *** //
+            if (x.second.children.size()>2)
+            {
+                errors[2] = true;
+            }
+
+            // *** E4 1st-check *** //
+            if (x.second.parents.empty())
+            {
+                if (root == empty) root = x.first;
                 else errors[3] = true; // multiple roots
             }
+
+            // *** E5 1st-check *** //
+            if (x.second.parents.size()>1)
+            {
+                errors[4] = true;
+            }
         }
-        if (root == empty) errors[4] = true; // If there is no root, implies that the tree forms a cycle.
+
+        // *** E4 2nd-check *** //
+        if (!errors[3] && tree.size() > 0)
+        {
+            errors[3] = multiple_blobs(tree.begin()->first);
+        }
+        
+        // *** E5 2nd-check *** //
+        if (root == empty)
+        {
+            errors[4] = true;
+        } 
         return true;
     }
     
@@ -150,38 +183,72 @@ private:
         ++n;
         return true;
     }
+
+    // Iterative implementation 
+    bool multiple_blobs(char c)
+    {
+        std::queue<char> q;
+        q.push(c);
+
+        while(!q.empty())
+        {
+            auto iter = tree.find(q.front());
+            q.pop();
+
+            if (iter != tree.end() && iter->second.label == empty)
+            {
+                iter->second.label = labelled;
+                for(auto& x:iter->second.parents)  q.push(x);
+                for(auto& x:iter->second.children) q.push(x);
+            }
+        }
+
+        for(const auto& x:tree)
+        {
+            if (x.second.label != labelled) return true;
+        }
+        return false;
+    }
+
     
-    // Recursive function for depth first search
+    // Recursive implementation
     void print_to_ss(char c, std::stringstream& ss) const
     {
-        std::uint32_t i = c2i(c);
-        
         ss << c;    
-        if (tree[i].lhs != empty)
+        auto iter = tree.find(c);
+        if (iter != tree.end())
         {
-            ss << "(";
-            print_to_ss(tree[i].lhs, ss);
-            ss << ")";
+            if (iter->second.lhs_child != empty)
+            {
+                ss << "(";
+                print_to_ss(iter->second.lhs_child, ss);
+                ss << ")";
+
+                if (iter->second.rhs_child != empty)
+                {
+                    ss << "(";
+                    print_to_ss(iter->second.rhs_child, ss);
+                    ss << ")";
+                }
+            }
         }
-        if (tree[i].rhs != empty)
-        {
-            ss << "(";
-            print_to_ss(tree[i].rhs, ss);
-            ss << ")";
-        }   
     }
 
 private:
     static const char empty = '*';
+    static const char labelled = 'x';
     struct info
     {
-        char parent;
-        char lhs;
-        char rhs;
+        char label;
+        char lhs_child;
+        char rhs_child;
+        std::unordered_set<char> parents;
+        std::unordered_set<char> children;
     };    
     
+private:
     char root;
-    std::array<info,26> tree;
+    std::unordered_map<char,info> tree;
     std::array<bool,5> errors;
 };
 
@@ -190,7 +257,7 @@ private:
 // ********************************** //
 void test_tree_checker()
 {
-    for(std::uint32_t n=0; n!=53; ++n)
+    for(std::uint32_t n=0; n!=55; ++n)
     {
         std::string str;
         std::string expected;
@@ -253,7 +320,7 @@ void test_tree_checker()
         if (n==42)  { str = "(A,B) (A,C) (B,D) (D,E) (D,F) (X,Y) (D,Y)";            expected = "E3"; } // E3,E4,E5d
 
         // Suite 4 : quad errors
-        if (n==43)  { str = "(A,B) (A,C) (B,D) (D,E) (D,F) (X,Y) (D,Y) D,Y)";       expected = "E2"; } // E2,E3,E4,E5d [FAIL-2]
+        if (n==43)  { str = "(A,B) (A,C) (B,D) (D,E) (D,F) (X,Y) (D,Y) (D,Y)";      expected = "E2"; } // E2,E3,E4,E5d [FAIL-2]
         
         // Suite 5 : minimal node-set with E2,E3,E4,E5
         if (n==44)  { str = "(A,B)";                                                expected = "(A(B))"; }
@@ -265,6 +332,8 @@ void test_tree_checker()
         if (n==50)  { str = "(A,B) (B,A)";                                          expected = "E5"; } // E5b
         if (n==51)  { str = "(A,B) (B,C) (A,C)";                                    expected = "E5"; } // E5c
         if (n==52)  { str = "(A,B) (C,B)";                                          expected = "E4"; } // E4,E5d
+        if (n==53)  { str = "(";                                                    expected = "E1"; } // E1
+        if (n==54)  { str = "";                                                     expected = "E5"; } // E5
 
         tree_checker chk;
         chk.load(str);
@@ -277,8 +346,8 @@ void test_tree_checker()
         else
         {
             std::cout << "\nTest_" << n << " failed, expected = " << expected << ", but answer = " << answer;
-        //  chk.debug();
-        //  std::cout << "\n";
+            chk.debug();
+            std::cout << "\n";
         }
     }
 
