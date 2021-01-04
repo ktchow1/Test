@@ -27,6 +27,7 @@ void test_index_seq3();
 void test_ipc_unnamed_pipe();
 void test_ipc_named_pipe(bool);
 void test_ipc_shared_memory();
+void test_is_vector();
 void test_literal_operator();
 void test_move_semantics();
 void test_new_operator();
@@ -114,6 +115,7 @@ int main(int argc, char* argv[])
     //  test_ipc_unnamed_pipe();
     //  test_ipc_named_pipe(argc > 1); // with argument for producer
     //  test_ipc_shared_memory();
+        test_is_vector();
         test_literal_operator(); 
         test_move_semantics(); 
         test_new_operator(); 
@@ -164,7 +166,7 @@ int main(int argc, char* argv[])
 //  test_anagram();    
 //  test_int2str();
 //  test_matrix_spiral(); 
-//  test_tree_checker();
+    test_tree_checker();
     std::cout << "\n\n\n";
     return 0;
 }

@@ -12,8 +12,8 @@ void test_psql01()
         std::cout << "\nConnection to database failed : " << PQerrorMessage(connection);
         std::cout << "\n==============================================";
         std::cout << "\nDont forget to : ";
-        std::cout << "\n1. start postgresql daemon";
-        std::cout << "\n2. sudo -u username";
+        std::cout << "\n1. sudo service postgresql start";
+        std::cout << "\n2. sudo -u dick ./Test";
         std::cout << "\n==============================================";
         PQfinish(connection);
         return;
