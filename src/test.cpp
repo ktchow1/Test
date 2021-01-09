@@ -42,6 +42,7 @@ void test_pod_string();
 void test_pod_T();
 void test_randgen();
 void test_range_lib();
+void test_reference();
 void test_sfinae0();
 void test_sfinae1();
 void test_sfinae2();
@@ -55,6 +56,7 @@ void test_STL_constraint2(); /*
 void test_STL_constraint3();  */
 void test_structured_binding();
 void test_template_member();   
+void test_template_member_ptr();   
 void test_template_template(); 
 void test_template_common_type();
 void test_template_zip_with();
@@ -84,7 +86,8 @@ void test_psql01();
 
 int main(int argc, char* argv[])
 {    
-    test_psql01();
+//  test_psql01();
+    test_reference();
 
     bool run_all = false;
     if (run_all)
@@ -130,6 +133,7 @@ int main(int argc, char* argv[])
         test_pod_T();
         test_randgen();    
         test_range_lib();    
+        test_reference();
         test_sfinae0();
         test_sfinae1();
         test_sfinae2(); 
@@ -143,6 +147,7 @@ int main(int argc, char* argv[])
     //  test_STL_constraint3();
         test_structured_binding(); 
         test_template_member();
+        test_template_member_ptr();
         test_template_template(); 
         test_template_common_type();
         test_template_zip_with(); 
@@ -166,7 +171,7 @@ int main(int argc, char* argv[])
 //  test_anagram();    
 //  test_int2str();
 //  test_matrix_spiral(); 
-    test_tree_checker();
+//  test_tree_checker();
     std::cout << "\n\n\n";
     return 0;
 }

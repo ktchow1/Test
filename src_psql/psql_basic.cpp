@@ -1,10 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <stdlib.h> // for system() call
 #include <libpq-fe.h>
 using namespace std::string_literals;
 
 void test_psql01() 
 {
+    system("sudo service postgresql start");
+
     // Step 1 : Make Connection
     PGconn *connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
     if (PQstatus(connection) == CONNECTION_BAD) 
@@ -13,7 +16,7 @@ void test_psql01()
         std::cout << "\n==============================================";
         std::cout << "\nDont forget to : ";
         std::cout << "\n1. sudo service postgresql start";
-        std::cout << "\n2. sudo -u dick ./Test";
+        std::cout << "\n2. sudo -u dick ./Test     (pwd=12qwasZX)"; 
         std::cout << "\n==============================================";
         PQfinish(connection);
         return;

@@ -24,6 +24,50 @@ void test_template_member()
     invoke_wrapper(x);
 }
 
+// ******************************************** //
+// *** member pointer as template parameter *** //
+// ******************************************** //
+struct simple_pod
+{
+    std::uint32_t x{0};
+    std::string s{""};
+};
+
+std::ostream& operator<<(std::ostream& os, const simple_pod& pod)
+{
+    os << pod.x << " " << pod.s;
+    return os;
+}
+
+void init(std::uint32_t& x) { x = 123;   }
+void init(std::string& s)   { s = "abc"; }
+
+template<typename T> void pass_as_non_template_para(simple_pod& pod, T simple_pod::* mem_ptr)
+{
+    init(pod.*mem_ptr);
+};
+
+template<typename M> void pass_as_template_para(simple_pod& pod, M mem_ptr)
+{
+    init(pod.*mem_ptr);
+};
+
+void test_template_member_ptr()
+{
+    simple_pod pod0;
+    simple_pod pod1;
+
+    std::cout << "\npod0 = " << pod0;
+    pass_as_non_template_para(pod0, &simple_pod::x);
+    pass_as_non_template_para(pod0, &simple_pod::s);
+    std::cout << "\npod0 = " << pod0;
+
+    std::cout << "\npod1 = " << pod1;
+    pass_as_template_para(pod1, &simple_pod::x);
+    pass_as_template_para(pod1, &simple_pod::s);
+    std::cout << "\npod1 = " << pod1;
+}
+
 // ************************* //
 // *** template template *** //
 // ************************* //
