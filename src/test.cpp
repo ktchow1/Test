@@ -63,6 +63,7 @@ void test_template_zip_with();
 void test_template_traits();
 void test_template_AFT();
 void test_template_AFT_invocable();
+void test_time();
 void test_timer_resolution();
 void test_tree_traverse();
 void test_tuple();
@@ -74,6 +75,8 @@ void test_variant_and_any();
 void test_variant_overloading_lambda();
 void test_variant_aggregate_init();
 void test_variant_CTAD();
+void test_yaml0();
+void test_yaml1();
 
 // hackersrank
 void test_anagram();
@@ -87,7 +90,9 @@ void test_psql01();
 int main(int argc, char* argv[])
 {    
 //  test_psql01();
-    test_reference();
+    test_time();
+    test_yaml0();
+    test_yaml1();
 
     bool run_all = false;
     if (run_all)
@@ -154,6 +159,7 @@ int main(int argc, char* argv[])
         test_template_traits();
         test_template_AFT();
         test_template_AFT_invocable();
+        test_time();
     //  test_timer_resolution();
         test_tree_traverse(); 
         test_tuple();     
@@ -165,6 +171,8 @@ int main(int argc, char* argv[])
         test_variant_overloading_lambda();
         test_variant_aggregate_init();
         test_variant_CTAD(); 
+        test_yaml0(); 
+        test_yaml1(); 
     }
 
     // hackersrank

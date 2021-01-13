@@ -79,7 +79,7 @@ void test_reference()
     // ***************** /
     // *** Subtest 4 *** //
     // ***************** //
-//  std::optional<T&> op; // cannot compile
+//  std::optional<T&> opt(obj); // cannot compile
     auto opt = std::make_optional(std::ref(obj));
     std::cout << "\nis_same = " << std::is_same_v<decltype(opt), std::optional<std::reference_wrapper<T>>>;
     std::cout << "\nis_same = " << std::is_same_v<decltype(opt), std::optional<T&>>;
