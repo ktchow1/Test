@@ -32,7 +32,7 @@ auto tuple2tuple_auto(const T& tuple, const std::index_sequence<NS...>& dummy)
     return std::make_tuple(std::get<NS>(tuple)...);
 }
 
-void test_index_seq()
+void test_index_seq0()
 {
     std::vector<std::string> v = {"111", "222", "333", "444", "555"};
     auto t = std::tuple<std::uint32_t, std::uint32_t, std::string, std::string, std::string>{111, 222 , "333", "444", "555"};
@@ -148,7 +148,7 @@ auto tuple2tuple_auto(const T& tuple, const seq<NS...>& dummy)
     return std::make_tuple(std::get<NS>(tuple)...);
 }
 
-void test_index_seq2()
+void test_index_seq1()
 {
     std::cout << "\n" << std::is_same<make_seq<4>, seq<0,1,2>>::value
                       << std::is_same<make_seq<4>, seq<0,1,2,3>>::value
@@ -196,7 +196,7 @@ template<typename F, typename... ARGS> void invoke(F fct, const std::tuple<ARGS.
     invoke_impl(fct, tuple, std::make_index_sequence<sizeof...(ARGS)>{});
 }
 
-void test_index_seq3()
+void test_index_seq2()
 {
     auto t0 = std::tuple<std::uint32_t, std::uint32_t, std::string, std::string, std::string>{111, 222, "333", "444", "555"};
     auto t1 = std::tuple<std::uint32_t, std::uint32_t, std::string, std::string, std::string, std::string, std::string>{111, 222, "333", "444", "555", "666", "777"};

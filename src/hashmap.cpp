@@ -131,3 +131,38 @@ void test_hashmap1()
         std::cout << "\n" << iter->first << " : " << iter->second;
     }
 }
+
+void test_hashmap2_reference_wrapper()
+{
+    std::unordered_map<int, std::reference_wrapper<std::string>> map;
+
+    std::string s0 = "str0";
+    std::string s1 = "str1";
+    std::string s2 = "str2";
+    std::string s3 = "str3";
+    std::string s4 = "str4";
+    map.emplace(0, s0);
+    map.emplace(1, s1);
+    map.emplace(2, s2);
+    map.emplace(3, s3);
+    map.emplace(4, s4);
+
+    std::cout << "\nhashmap with reference_wrapper, cannot use operator[], use function at(), why?";
+    std::cout << "\nmap[" << 0 << "] = " << map.at(0).get();
+    std::cout << "\nmap[" << 1 << "] = " << map.at(1).get();
+    std::cout << "\nmap[" << 2 << "] = " << map.at(2).get();
+    std::cout << "\nmap[" << 3 << "] = " << map.at(3).get();
+    std::cout << "\nmap[" << 4 << "] = " << map.at(4).get();
+    map.at(0).get() = "abc";
+    map.at(1).get() = "def";
+    map.at(2).get() = "ghi";
+    map.at(3).get() = "jkl";
+    map.at(4).get() = "mno";
+    std::cout << "\nmap[" << 0 << "] = " << map.at(0).get();
+    std::cout << "\nmap[" << 1 << "] = " << map.at(1).get();
+    std::cout << "\nmap[" << 2 << "] = " << map.at(2).get();
+    std::cout << "\nmap[" << 3 << "] = " << map.at(3).get();
+    std::cout << "\nmap[" << 4 << "] = " << map.at(4).get();
+}
+
+

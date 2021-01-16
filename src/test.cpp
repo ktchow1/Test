@@ -21,9 +21,10 @@ void test_hashfct0();
 void test_hashfct1();
 void test_hashmap0();
 void test_hashmap1();
-void test_index_seq();
+void test_hashmap2_reference_wrapper();
+void test_index_seq0();
+void test_index_seq1();
 void test_index_seq2();
-void test_index_seq3();
 void test_ipc_unnamed_pipe();
 void test_ipc_named_pipe(bool);
 void test_ipc_shared_memory();
@@ -85,14 +86,13 @@ void test_matrix_spiral();  // citadel
 void test_tree_checker();   // optiver
 
 // psql
-void test_psql01();
+void test_psql0();
+void test_psql1();
 
 int main(int argc, char* argv[])
 {    
-//  test_psql01();
-    test_time();
-    test_yaml0();
-    test_yaml1();
+    test_psql0();
+//  test_psql1();
 
     bool run_all = false;
     if (run_all)
@@ -117,9 +117,10 @@ int main(int argc, char* argv[])
         test_hashfct1(); 
         test_hashmap0(); 
         test_hashmap1(); 
-        test_index_seq();
+        test_hashmap2_reference_wrapper();
+        test_index_seq0();
+        test_index_seq1();
         test_index_seq2();
-        test_index_seq3();
     //  test_ipc_unnamed_pipe();
     //  test_ipc_named_pipe(argc > 1); // with argument for producer
     //  test_ipc_shared_memory();

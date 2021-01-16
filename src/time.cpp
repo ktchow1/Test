@@ -5,22 +5,6 @@
 #include<chrono>
 #include<ctime>   // for timespec
 
-/*
-timespec is a struct with two integer members : tv_sec and tv_nsec
-timeval  is similar  with two integer members : tv_sec and tv_usec
-
-std::chrono::duration is a count plus a unit
-std::chrono::duration supports seconds / milliseconds / microseconds / nanoseconds (can be casted)
-
-std::chrono::time_point implementation is encapsulated.
-std::chrono::time_point can be converted into duration in 2 ways :
-(1) difference between EPOCH (1970 Jan 01) and time point is given by member time_since_epoch()
-(2) difference between two time_point returns duration
-
-Printing duration is easy, by getting count().
-Printing time_point is complicated, see function below.
-*/
-
 template<typename CLOCK>
 std::string to_string(const std::chrono::time_point<CLOCK>& tp, bool favourite_format)
 {
@@ -46,9 +30,8 @@ std::string to_string(const std::chrono::time_point<CLOCK>& tp, bool favourite_f
 
 auto timespec_2_timepoint(const timespec& ts)
 {
-//  auto dur = std::chrono::seconds(ts.tv_sec) + 
-//             std::chrono::nanoseconds(ts.tv_nsec);
-    auto dur = std::chrono::nanoseconds{static_cast<std::uint64_t>(ts.tv_sec * 1'000'000'000U) + ts.tv_nsec};
+    auto dur = std::chrono::seconds(ts.tv_sec) + 
+               std::chrono::nanoseconds(ts.tv_nsec);
 
     return std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> { dur };
 }
@@ -57,12 +40,15 @@ void test_time()
 {
     // [Task 1] Print time_point
     std::chrono::time_point<std::chrono::system_clock> tp = std::chrono::system_clock::now(); // method 1 : std::chrono
-    timespec ts; clock_gettime(CLOCK_MONOTONIC, &ts);                                         // method 2 : clock_gettime
+    timespec ts0; clock_gettime(CLOCK_REALTIME,  &ts0);                                       // method 2 : clock_gettime
+    timespec ts1; clock_gettime(CLOCK_MONOTONIC, &ts1);                                       // method 2 : clock_gettime (doesnt work)
 
     std::cout << "\ncurrent time = " << to_string(tp, true);
     std::cout << "\ncurrent time = " << to_string(tp, false);
-    std::cout << "\ncurrent time = " << to_string(timespec_2_timepoint(ts), true)  << " [incorrect]";
-    std::cout << "\ncurrent time = " << to_string(timespec_2_timepoint(ts), false) << " [incorrect]";
+    std::cout << "\ncurrent time = " << to_string(timespec_2_timepoint(ts0), true)  << " [correct]";
+    std::cout << "\ncurrent time = " << to_string(timespec_2_timepoint(ts0), false) << " [correct]";
+    std::cout << "\ncurrent time = " << to_string(timespec_2_timepoint(ts1), true)  << " [incorrect]";
+    std::cout << "\ncurrent time = " << to_string(timespec_2_timepoint(ts1), false) << " [incorrect]";
     std::cout << "\n";
 
     // [Task 2] Second and sub-second starting from Epoch

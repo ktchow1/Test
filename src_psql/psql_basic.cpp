@@ -4,12 +4,8 @@
 #include <libpq-fe.h>
 using namespace std::string_literals;
 
-void test_psql01() 
+bool check_status(PGconn* connection)
 {
-    system("sudo service postgresql start");
-
-    // Step 1 : Make Connection
-    PGconn *connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
     if (PQstatus(connection) == CONNECTION_BAD) 
     {
         std::cout << "\nConnection to database failed : " << PQerrorMessage(connection);
@@ -19,7 +15,7 @@ void test_psql01()
         std::cout << "\n2. sudo -u dick ./Test     (pwd=12qwasZX)"; 
         std::cout << "\n==============================================";
         PQfinish(connection);
-        return;
+        return false;
     }
     else
     {
@@ -27,24 +23,49 @@ void test_psql01()
         std::cout << "\nusername : " << PQuser(connection);
         std::cout << "\ndatabase : " << PQdb(connection);
         std::cout << "\npassword : " << PQpass(connection);
+        return true;
     }
+}
 
-    // Step 2 : Drop table
-    PGresult *result = PQexec(connection, "DROP TABLE IF EXISTS book_table");
-    if (PQresultStatus(result) != PGRES_COMMAND_OK) 
+bool check_status(const std::string& label, PGconn* connection, PGresult* result, auto expected_value)
+{
+    if (PQresultStatus(result) != expected_value) 
     {
-        std::cout << "\nDrop table failed";
+        std::cout << "\n" << label << " failed : " << PQresultErrorMessage(result);
         PQclear(result);
         PQfinish(connection);
-        return;
+        return false;
     }
     else
     {
-        std::cout << "\nDrop table succeed";
-        PQclear(result);
+        std::cout << "\n" << label << " succeed";
+        return true;
     }
+}
 
-    // Step 3 : Create table
+void test_psql0() 
+{
+    system("sudo service postgresql start");
+
+
+    // ******************************** //
+    // *** Step 1 : Make Connection *** //
+    // ******************************** //
+    PGconn *connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
+    if (!check_status(connection)) return;
+
+
+    // *************************** //
+    // *** Step 2 : Drop table *** //
+    // *************************** //
+    PGresult *result = PQexec(connection, "DROP TABLE IF EXISTS book_table");
+    if (!check_status("Drop table", connection, result, PGRES_COMMAND_OK)) return;
+    PQclear(result);
+
+
+    // ***************************** //
+    // *** Step 3 : Create table *** //
+    // ***************************** //
     std::string str;
     str  = "CREATE TABLE book_table("s;
     str += "book_id serial PRIMARY KEY, "s; 
@@ -53,20 +74,13 @@ void test_psql01()
     str += "buy_date  date)"s; 
 
     result = PQexec(connection, str.c_str());
-    if (PQresultStatus(result) != PGRES_COMMAND_OK) 
-    {
-        std::cout << "\nCreate table failed";
-        PQclear(result);
-        PQfinish(connection);
-        return;
-    }
-    else
-    {
-        std::cout << "\nCreate table succeed";
-        PQclear(result);
-    }
+    if (!check_status("Create table", connection, result, PGRES_COMMAND_OK)) return;
+    PQclear(result);
 
-    // Step 4 : Insertion
+
+    // ************************** //
+    // *** Step 4 : Insertion *** //
+    // ************************** //
     std::vector<std::string> title = 
     {
         "differential geometry", "complex analysis", "stochastic calculus", 
@@ -90,88 +104,66 @@ void test_psql01()
         str += "'"s += std::to_string(2010 + n) += "-01-01"s += "') "s;
 
         result = PQexec(connection, str.c_str());
-        if (PQresultStatus(result) != PGRES_COMMAND_OK)
-        {
-            std::cout << "\nInsertion to table failed : " << PQresultErrorMessage(result);
-            PQclear(result);
-        //  PQfinish(connection);
-        //  return;
-        }
-        else
-        {
-            std::cout << "\nInsertion to table succeed";
-            PQclear(result);
-        }
+        if (!check_status("Insert table", connection, result, PGRES_COMMAND_OK)) return;
+        PQclear(result);
     }
+    std::cout << "\n";
 
-    // Step 5 : Selection 
+
+    // ************************** //
+    // *** Step 5 : Selection *** //
+    // ************************** //
     result = PQexec(connection, "SELECT * FROM book_table WHERE buy_date > '2011-06-30' ");    
-    if (PQresultStatus(result) != PGRES_TUPLES_OK) 
-    {
-        std::cout << "\nSelection from table failed : " << PQresultErrorMessage(result);
-        PQclear(result);
-        PQfinish(connection);
-        return;
-    }
-    else
-    { 
-        std::uint32_t NumRows = PQntuples(result);
-        for(std::uint32_t n=0; n!=NumRows; ++n)
-        {
-            std::string str0 = PQgetvalue(result, n, 0);
-            std::string str1 = PQgetvalue(result, n, 1);
-            std::string str2 = PQgetvalue(result, n, 2);
-            std::string str3 = PQgetvalue(result, n, 3);
-            std::cout << "\n" << str0 << " " << str1 << " " << str2 << " " << str3;
-        }    
-        PQclear(result);
-    }
+    if (!check_status("Select table", connection, result, PGRES_TUPLES_OK)) return;
 
-    // Step 6 : Selection 1 row for META-DATA
+    std::uint32_t NumRows = PQntuples(result);
+    for(std::uint32_t n=0; n!=NumRows; ++n)
+    {
+        std::string str0 = PQgetvalue(result, n, 0);
+        std::string str1 = PQgetvalue(result, n, 1);
+        std::string str2 = PQgetvalue(result, n, 2);
+        std::string str3 = PQgetvalue(result, n, 3);
+        std::cout << "\n--- " << str0 << " " << str1 << " " << str2 << " " << str3;
+    }    
+    PQclear(result);
+    std::cout << "\n";
+
+
+    // *********************************************** //
+    // ***  Step 6 : Selection 1 row for META-DATA *** //
+    // *********************************************** //
     result = PQexec(connection, "SELECT * FROM book_table LIMIT 1"); // LIMIT means take first n rows only    
-    if (PQresultStatus(result) != PGRES_TUPLES_OK) 
-    {
-        std::cout << "\nSelection from table failed : " << PQresultErrorMessage(result);
-        PQclear(result);
-        PQfinish(connection);
-        return;
-    }
-    else
-    { 
-        std::uint32_t NumCols = PQnfields(result); 
-        for(std::uint32_t n=0; n!=NumCols; ++n)
-        {
-            std::string str = PQfname(result, n);
-            std::cout << "\nCol_" << n << " is " << str;
-        }    
-        PQclear(result);
-    }
+    if (!check_status("Select table for META data", connection, result, PGRES_TUPLES_OK)) return;
 
-    // Step 7 : List tables in database
+    std::uint32_t NumCols = PQnfields(result); 
+    for(std::uint32_t n=0; n!=NumCols; ++n)
+    {
+        std::string str = PQfname(result, n);
+        std::cout << "\n--- Col_" << n << " is " << str;
+    }    
+    PQclear(result);
+    std::cout << "\n";
+
+
+    // **************************************** //
+    // *** Step 7 : List tables in database *** //
+    // **************************************** //
     result = PQexec(connection, "CREATE TABLE dummy_table0(id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)");      PQclear(result);
     result = PQexec(connection, "CREATE TABLE dummy_table1(id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)");      PQclear(result);
     result = PQexec(connection, "CREATE TABLE dummy_table2(id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)");      PQclear(result);
-
     result = PQexec(connection, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");    
-    if (PQresultStatus(result) != PGRES_TUPLES_OK)
-    {
-        std::cout << "\nSelect from schema failed : " << PQresultErrorMessage(result);
-        PQclear(result);
-        PQfinish(connection);
-        return;
-    }
-    else
-    { 
-        std::uint32_t NumRows = PQntuples(result);
-        for(std::uint32_t n=0; n!=NumRows; ++n)
-        {     
-            std::cout << "\nTable_ " << n << " " << PQgetvalue(result, n, 0);
-        }
-        PQclear(result);
-    }
+    if (!check_status("Select from schema", connection, result, PGRES_TUPLES_OK)) return;
 
-    // Transaction is a sequence of SQL-statements grouped to form an ATOMIC operation.
-    // Transaction is declared by :
+    NumRows = PQntuples(result);
+    for(std::uint32_t n=0; n!=NumRows; ++n)
+    {     
+        std::cout << "\n--- Table_ " << n << " " << PQgetvalue(result, n, 0);
+    }
+    PQclear(result);
+
+
+//  Transaction is a sequence of SQL-statements grouped to form an ATOMIC operation.
+//  Transaction is declared by :
     
 /*  result = PQexec(conn, "BEGIN");  
     transaction statement 0
