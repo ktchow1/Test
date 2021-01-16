@@ -91,8 +91,8 @@ void test_psql1();
 
 int main(int argc, char* argv[])
 {    
-    test_psql0();
-//  test_psql1();
+//  test_psql0();
+    test_psql1();
 
     bool run_all = false;
     if (run_all)

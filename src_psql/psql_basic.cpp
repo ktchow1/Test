@@ -54,6 +54,12 @@ void test_psql0()
     PGconn *connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
     if (!check_status(connection)) return;
 
+    // **************************************** //
+    // *** No permission to create database *** //
+    // **************************************** //
+//  PGresult* result = PQexec(connection, "CREATE DATABASE new_db");
+//  if (!check_status("Create database", connection, result, PGRES_COMMAND_OK)) return;
+//  PQclear(result);
 
     // *************************** //
     // *** Step 2 : Drop table *** //
