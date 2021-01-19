@@ -4,8 +4,9 @@
 #include<tuple>
 
 // Techniques
-// 1. std::apply
-// 2. comma operator
+// 1. iterate variadic parameter pack normally
+//    iterate variadic std::tuple using std::apply
+// 2. comma operator (the multiple brackets)
 // 3. CTAD
 // 4. "decltype + declval" to extract type
 
