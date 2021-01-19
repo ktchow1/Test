@@ -74,10 +74,10 @@ void test_psql0()
     // ***************************** //
     std::string str;
     str  = "CREATE TABLE book_table("s;
-    str += "book_id serial PRIMARY KEY, "s; 
-    str += "book_name VARCHAR(50) NOT NULL, "s;
+    str += "book_id   SERIAL PRIMARY KEY, "s; 
+    str += "book_name TEXT NOT NULL, "s;
     str += "catergory VARCHAR(50) check (catergory in ('maths','programming','finance','machine learning')), "s;
-    str += "buy_date  date)"s; 
+    str += "buy_date  TIMESTAMP)"s; 
 
     result = PQexec(connection, str.c_str());
     if (!check_status("Create table", connection, result, PGRES_COMMAND_OK)) return;
@@ -107,7 +107,9 @@ void test_psql0()
         str  = "INSERT INTO book_table (book_name, catergory, buy_date) VALUES (";
         str += "'"s += title[n] += "', "s;
         str += "'"s += catergory[n] += "', "s;
-        str += "'"s += std::to_string(2010 + n) += "-01-01"s += "') "s;
+        str += "'"s += std::to_string(2010 + n) += "-01-01"s            // yyyy-mm-dd space
+                    += " 12:00:"s += std::to_string(30+n)               // hh:mm:ss
+                    += ".0000"s   += std::to_string(20+n) += "') "s;    // .microsec
 
         result = PQexec(connection, str.c_str());
         if (!check_status("Insert table", connection, result, PGRES_COMMAND_OK)) return;
@@ -123,13 +125,14 @@ void test_psql0()
     if (!check_status("Select table", connection, result, PGRES_TUPLES_OK)) return;
 
     std::uint32_t NumRows = PQntuples(result);
+    std::uint32_t NumCols = PQnfields(result);
     for(std::uint32_t n=0; n!=NumRows; ++n)
     {
-        std::string str0 = PQgetvalue(result, n, 0);
-        std::string str1 = PQgetvalue(result, n, 1);
-        std::string str2 = PQgetvalue(result, n, 2);
-        std::string str3 = PQgetvalue(result, n, 3);
-        std::cout << "\n--- " << str0 << " " << str1 << " " << str2 << " " << str3;
+        std::cout << "\n--- ";
+        for(std::uint32_t m=0; m!=NumCols; ++m)
+        {
+            std::cout <<  PQgetvalue(result, n, m) << " | ";
+        }
     }    
     PQclear(result);
     std::cout << "\n";
@@ -141,7 +144,7 @@ void test_psql0()
     result = PQexec(connection, "SELECT * FROM book_table LIMIT 1"); // LIMIT means take first n rows only    
     if (!check_status("Select table for META data", connection, result, PGRES_TUPLES_OK)) return;
 
-    std::uint32_t NumCols = PQnfields(result); 
+    NumCols = PQnfields(result); 
     for(std::uint32_t n=0; n!=NumCols; ++n)
     {
         std::string str = PQfname(result, n);

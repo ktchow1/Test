@@ -7,12 +7,15 @@ void test_backtrace();
 void test_casting();
 void test_casting_shared_ptr();
 void test_concepts();
+void test_cpoly(); 
+void test_cstr(); 
 void test_ctad(); 
 void test_decltype();
 void test_declval0();
 void test_declval1();
 void test_deleter();
 void test_deleter_for_pool();
+void test_enum();
 void test_filesystem();
 void test_function_array_arg();
 void test_function_macro();
@@ -88,11 +91,16 @@ void test_tree_checker();   // optiver
 // psql
 void test_psql0();
 void test_psql1();
+void test_psql_API();
+void test_psql_tuple();
 
 int main(int argc, char* argv[])
 {    
+//  test_cpoly(); 
 //  test_psql0();
-    test_psql1();
+//  test_psql1();
+    test_psql_API();
+    test_psql_tuple();
 
     bool run_all = false;
     if (run_all)
@@ -103,12 +111,15 @@ int main(int argc, char* argv[])
         test_casting();
         test_casting_shared_ptr();
         test_concepts();
+        test_cpoly(); 
+        test_cstr(); 
         test_ctad();
         test_decltype();
         test_declval0(); 
         test_declval1(); 
         test_deleter();
         test_deleter_for_pool();
+        test_enum(); 
         test_filesystem(); 
         test_function_array_arg();
         test_function_macro();
