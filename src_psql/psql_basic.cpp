@@ -1,47 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <stdlib.h> // for system() call
-#include <libpq-fe.h>
+#include "psql_API.h" 
 using namespace std::string_literals;
-
-bool check_status(PGconn* connection)
-{
-    if (PQstatus(connection) == CONNECTION_BAD) 
-    {
-        std::cout << "\nConnection to database failed : " << PQerrorMessage(connection);
-        std::cout << "\n==============================================";
-        std::cout << "\nDont forget to : ";
-        std::cout << "\n1. sudo service postgresql start";
-        std::cout << "\n2. sudo -u dick ./Test     (pwd=12qwasZX)"; 
-        std::cout << "\n==============================================";
-        PQfinish(connection);
-        return false;
-    }
-    else
-    {
-        std::cout << "\nConnection to database succeed : version " << PQserverVersion(connection);
-        std::cout << "\nusername : " << PQuser(connection);
-        std::cout << "\ndatabase : " << PQdb(connection);
-        std::cout << "\npassword : " << PQpass(connection);
-        return true;
-    }
-}
-
-bool check_status(const std::string& label, PGconn* connection, PGresult* result, auto expected_value)
-{
-    if (PQresultStatus(result) != expected_value) 
-    {
-        std::cout << "\n" << label << " failed : " << PQresultErrorMessage(result);
-        PQclear(result);
-        PQfinish(connection);
-        return false;
-    }
-    else
-    {
-        std::cout << "\n" << label << " succeed";
-        return true;
-    }
-}
 
 void test_psql0() 
 {
@@ -51,21 +9,23 @@ void test_psql0()
     // ******************************** //
     // *** Step 1 : Make Connection *** //
     // ******************************** //
-    PGconn *connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
-    if (!check_status(connection)) return;
+    PGconn* connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
+    if (!psql::check_status(connection)) return;
+
 
     // **************************************** //
     // *** No permission to create database *** //
     // **************************************** //
 //  PGresult* result = PQexec(connection, "CREATE DATABASE new_db");
-//  if (!check_status("Create database", connection, result, PGRES_COMMAND_OK)) return;
+//  if (!psql::check_status("Create database", connection, result, PGRES_COMMAND_OK)) return;
 //  PQclear(result);
+
 
     // *************************** //
     // *** Step 2 : Drop table *** //
     // *************************** //
-    PGresult *result = PQexec(connection, "DROP TABLE IF EXISTS book_table");
-    if (!check_status("Drop table", connection, result, PGRES_COMMAND_OK)) return;
+    PGresult* result = PQexec(connection, "DROP TABLE IF EXISTS book_table");
+    if (!psql::check_status("Drop table", connection, result, PGRES_COMMAND_OK)) return;
     PQclear(result);
 
 
@@ -80,7 +40,7 @@ void test_psql0()
     str += "buy_date  TIMESTAMP)"s; 
 
     result = PQexec(connection, str.c_str());
-    if (!check_status("Create table", connection, result, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Create table", connection, result, PGRES_COMMAND_OK)) return;
     PQclear(result);
 
 
@@ -112,7 +72,7 @@ void test_psql0()
                     += ".0000"s   += std::to_string(20+n) += "') "s;    // .microsec
 
         result = PQexec(connection, str.c_str());
-        if (!check_status("Insert table", connection, result, PGRES_COMMAND_OK)) return;
+        if (!psql::check_status("Insert table", connection, result, PGRES_COMMAND_OK)) return;
         PQclear(result);
     }
     std::cout << "\n";
@@ -122,7 +82,7 @@ void test_psql0()
     // *** Step 5 : Selection *** //
     // ************************** //
     result = PQexec(connection, "SELECT * FROM book_table WHERE buy_date > '2011-06-30' ");    
-    if (!check_status("Select table", connection, result, PGRES_TUPLES_OK)) return;
+    if (!psql::check_status("Select table", connection, result, PGRES_TUPLES_OK)) return;
 
     std::uint32_t NumRows = PQntuples(result);
     std::uint32_t NumCols = PQnfields(result);
@@ -142,7 +102,7 @@ void test_psql0()
     // ***  Step 6 : Selection 1 row for META-DATA *** //
     // *********************************************** //
     result = PQexec(connection, "SELECT * FROM book_table LIMIT 1"); // LIMIT means take first n rows only    
-    if (!check_status("Select table for META data", connection, result, PGRES_TUPLES_OK)) return;
+    if (!psql::check_status("Select table for META data", connection, result, PGRES_TUPLES_OK)) return;
 
     NumCols = PQnfields(result); 
     for(std::uint32_t n=0; n!=NumCols; ++n)
@@ -161,7 +121,7 @@ void test_psql0()
     result = PQexec(connection, "CREATE TABLE dummy_table1(id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)");      PQclear(result);
     result = PQexec(connection, "CREATE TABLE dummy_table2(id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)");      PQclear(result);
     result = PQexec(connection, "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");    
-    if (!check_status("Select from schema", connection, result, PGRES_TUPLES_OK)) return;
+    if (!psql::check_status("Select from schema", connection, result, PGRES_TUPLES_OK)) return;
 
     NumRows = PQntuples(result);
     for(std::uint32_t n=0; n!=NumRows; ++n)

@@ -96,11 +96,10 @@ void test_psql_tuple();
 
 int main(int argc, char* argv[])
 {    
-//  test_cpoly(); 
 //  test_psql0();
 //  test_psql1();
     test_psql_API();
-    test_psql_tuple();
+//  test_psql_tuple();
 
     bool run_all = false;
     if (run_all)

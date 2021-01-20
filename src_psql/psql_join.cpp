@@ -1,12 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <stdlib.h> // for system() call
-#include <libpq-fe.h>
+#include "psql_API.h"
 using namespace std::string_literals;
-
-// Helper functions defined in psql_basic.cpp
-bool check_status(PGconn* connection);
-bool check_status(const std::string& label, PGconn* connection, PGresult* result, auto expected_value);
 
 void test_psql1() 
 {
@@ -17,7 +10,7 @@ void test_psql1()
     // *** Step 1 : Make Connection *** //
     // ******************************** //
     PGconn *connection = PQconnectdb("user=dick password=12qwasZX dbname=book_db");
-    if (!check_status(connection)) return;
+    if (!psql::check_status(connection)) return;
 
 
     // *************************** //
@@ -25,8 +18,8 @@ void test_psql1()
     // *************************** //
     PGresult *result0 = PQexec(connection, "DROP TABLE IF EXISTS item");
     PGresult *result1 = PQexec(connection, "DROP TABLE IF EXISTS product");
-    if (!check_status("Drop item",    connection, result0, PGRES_COMMAND_OK)) return;
-    if (!check_status("Drop product", connection, result1, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Drop item",    connection, result0, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Drop product", connection, result1, PGRES_COMMAND_OK)) return;
     PQclear(result0);
     PQclear(result1);
 
@@ -40,8 +33,8 @@ void test_psql1()
 
     result0 = PQexec(connection, str0.c_str());
     result1 = PQexec(connection, str1.c_str());
-    if (!check_status("Create item",    connection, result0, PGRES_COMMAND_OK)) return;
-    if (!check_status("Create product", connection, result1, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Create item",    connection, result0, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Create product", connection, result1, PGRES_COMMAND_OK)) return;
     PQclear(result0);
     PQclear(result1);
 
@@ -68,8 +61,8 @@ void test_psql1()
 
     result0 = PQexec(connection, str0.c_str());
     result1 = PQexec(connection, str1.c_str());
-    if (!check_status("Insert item",    connection, result0, PGRES_COMMAND_OK)) return;
-    if (!check_status("Insert product", connection, result1, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Insert item",    connection, result0, PGRES_COMMAND_OK)) return;
+    if (!psql::check_status("Insert product", connection, result1, PGRES_COMMAND_OK)) return;
     PQclear(result0);
     PQclear(result1);
     std::cout << "\n";
@@ -80,8 +73,8 @@ void test_psql1()
     // ************************** //
     result0 = PQexec(connection, "SELECT * FROM item");    
     result1 = PQexec(connection, "SELECT * FROM product");    
-    if (!check_status("Select item",    connection, result0, PGRES_TUPLES_OK)) return;
-    if (!check_status("Select product", connection, result1, PGRES_TUPLES_OK)) return;
+    if (!psql::check_status("Select item",    connection, result0, PGRES_TUPLES_OK)) return;
+    if (!psql::check_status("Select product", connection, result1, PGRES_TUPLES_OK)) return;
 
     std::uint32_t NumRows0 = PQntuples(result0);
     std::uint32_t NumRows1 = PQntuples(result1);
@@ -117,7 +110,7 @@ void test_psql1()
         if (n==4) s = "SELECT * FROM item FULL  OUTER JOIN product ON item.product_type = product.product_type ORDER BY item.item_id"; 
 
         PGresult* result = PQexec(connection, s.c_str());
-        if (!check_status("JOIN", connection, result, PGRES_TUPLES_OK)) return;
+        if (!psql::check_status("JOIN", connection, result, PGRES_TUPLES_OK)) return;
 
         std::uint32_t NumRows = PQntuples(result);
         std::cout << "\nData in JOIN";
