@@ -45,7 +45,7 @@ inline std::ostream& operator<<(std::ostream& os, const book& b)
 }
 
 // *********************************************** //
-// *** Add these functions for customised enum *** //
+// *** Add these functions for customised type *** //
 // *********************************************** //
 template<> std::string psql::psql_type<book_genre>() 
 {
@@ -95,8 +95,8 @@ void test_psql_API()
     data.emplace_back(book_genre::programming, "c++ template", "P.K.", "2016-10-01 16:10:40", 1005, 5);
     data.emplace_back(book_genre::quant_finan, "derivatives", "T.O.", "2017-11-01 17:20:50", 1006, 6);
 
-    if (!db.create<book>())      { PQfinish(connection);  std::cout << "\n\n";  return; }
-    if (!db.insert<book>(data))  { PQfinish(connection);  std::cout << "\n\n";  return; }
+    if (!db.create<book>()) { PQfinish(connection);  std::cout << "\n\n";  return; }
+    if (!db.insert(data))   { PQfinish(connection);  std::cout << "\n\n";  return; }
 
     std::vector<book> books;
     if (!db.select(books))  { PQfinish(connection);  std::cout << "\n\n";  return; }

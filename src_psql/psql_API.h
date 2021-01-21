@@ -160,7 +160,7 @@ bool psql::psql<ITEMS...>::create() const
         [this, &ss, &n](const typename ITEMS::ptr_type&... unpacked_mptrs)
         {
             ss << "(";
-            // comma operator takes the form (XXX,...)
+            // fold-expression-with-comma-operator takes form (XXX,...)
             // if XXX is complex, add extra bracket around (XXX)
             (( 
                 ss << keys[n++] << " " 

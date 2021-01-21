@@ -79,6 +79,7 @@ void test_variant_and_any();
 void test_variant_overloading_lambda();
 void test_variant_aggregate_init();
 void test_variant_CTAD();
+void test_variant_with_decltype();
 void test_yaml0();
 void test_yaml1();
 
@@ -182,6 +183,7 @@ int main(int argc, char* argv[])
         test_variant_overloading_lambda();
         test_variant_aggregate_init();
         test_variant_CTAD(); 
+        test_variant_with_decltype();
         test_yaml0(); 
         test_yaml1(); 
     }

@@ -6,7 +6,7 @@
 // Techniques
 // 1. iterate variadic parameter pack normally
 //    iterate variadic std::tuple using std::apply
-// 2. comma operator (the multiple brackets)
+// 2. fold-expression-with-comma-operator (the multiple brackets)
 // 3. CTAD
 // 4. "decltype + declval" to extract type
 
@@ -50,7 +50,7 @@ auto unzip(const std::tuple<LABEL_PTRS...>& tuple)
             // Comma operator (xxx,yyy,zzz);
             // put everything inside (,...); as if single line
             (keys.push_back(pairs.key),...);
-            mptrs = std::make_tuple(pairs.mptr ...); // no comma needed here
+            mptrs = std::make_tuple(pairs.mptr ...); // no fold-expression here
         }
         , tuple
     );
