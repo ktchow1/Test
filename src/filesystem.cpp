@@ -1,5 +1,6 @@
 #include<iostream>
 #include<filesystem>
+#include<experimental/source_location>
 
 void test_filesystem()
 {
@@ -37,5 +38,12 @@ void test_filesystem()
             else                                                       std::cout << "\nunknown --- " << str;
         }
     }
+
+    // (4) source location
+    auto x = std::experimental::source_location::current();
+    std::cout << "\nfile_name     = " << x.file_name();
+    std::cout << "\nfunction_name = " << x.function_name();
+    std::cout << "\nline          = " << x.line();
+
     std::cout << "\n\n";
 }
