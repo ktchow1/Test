@@ -46,6 +46,7 @@ include_directories(
     include 
     ~/dev/pgsql/include
     ~/dev/yaml-cpp/include
+    ~/dev/reckless/reckless/include
     /mnt/d/dev/boost_1_72_0 
 )
 
@@ -55,7 +56,7 @@ include_directories(
 file(GLOB SOURCES
      "src/*.cpp"
      "src_hacker/*.cpp"
-     "src_psql/*.cpp"
+     "src_ylib/*.cpp"
 )
 add_executable(Test ${SOURCES})       # for building executable
 # add_library(Test STATIC ${SOURCES}) # for building static lib .a
@@ -75,6 +76,7 @@ target_link_libraries(Test -lpq) # psql API
 target_link_libraries(Test -lgtest)
 target_link_libraries(Test -lpthread)
 target_link_libraries(Test "/home/ktchow1/dev/yaml-cpp/build/debug/libyaml-cppd.a") 
+target_link_libraries(Test "/home/ktchow1/dev/reckless/build/debug/libreckless.a") 
 
 # target_link_libraries(Test -lyaml-cppd) # Does not work, why?
 # This problem happens in both my home machine and office machine, 

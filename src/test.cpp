@@ -7,7 +7,6 @@ void test_backtrace();
 void test_casting();
 void test_casting_shared_ptr();
 void test_concepts();
-void test_cpoly(); 
 void test_cstr(); 
 void test_ctad(); 
 void test_decltype();
@@ -80,8 +79,6 @@ void test_variant_overloading_lambda();
 void test_variant_aggregate_init();
 void test_variant_CTAD();
 void test_variant_with_decltype();
-void test_yaml0();
-void test_yaml1();
 
 // hackersrank
 void test_anagram();
@@ -89,19 +86,32 @@ void test_int2str();        // citadel
 void test_matrix_spiral();  // citadel
 void test_tree_checker();   // optiver
 
-// psql
+// YLib : C-poly / event-handler / message-handler / PSQL / reckless / yaml
+void test_cpoly(); 
+void test_compose_and_parse();   
+void test_event_handler(); 
+void test_message_handler(); 
 void test_psql0();
 void test_psql1();
 void test_psql_API();
 void test_psql_tuple();
+void test_reckless();
+void test_yaml0();
+void test_yaml1();
 
 int main(int argc, char* argv[])
 { 
     test_cpoly();   
+    test_compose_and_parse();   
+    test_event_handler(); 
+    test_message_handler(); 
 //  test_psql0();
 //  test_psql1();
 //  test_psql_API();
 //  test_psql_tuple();
+    test_reckless();
+//  test_yaml0(); 
+//  test_yaml1(); 
 
     bool run_all = false;
     if (run_all)
@@ -112,7 +122,6 @@ int main(int argc, char* argv[])
         test_casting();
         test_casting_shared_ptr();
         test_concepts();
-        test_cpoly(); 
         test_cstr(); 
         test_ctad();
         test_decltype();
@@ -185,8 +194,6 @@ int main(int argc, char* argv[])
         test_variant_aggregate_init();
         test_variant_CTAD(); 
         test_variant_with_decltype();
-        test_yaml0(); 
-        test_yaml1(); 
     }
 
     // hackersrank
