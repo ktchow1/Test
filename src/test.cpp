@@ -87,6 +87,8 @@ void test_matrix_spiral();  // citadel
 void test_tree_checker();   // optiver
 
 // YLib : C-poly / event-handler / message-handler / PSQL / reckless / yaml
+void test_cat_files();
+void test_cut_files();
 void test_cpoly(); 
 void test_compose_and_parse();   
 void test_event_handler(); 
@@ -101,18 +103,6 @@ void test_yaml1();
 
 int main(int argc, char* argv[])
 { 
-    test_cpoly();   
-    test_compose_and_parse();   
-    test_event_handler(); 
-    test_message_handler(); 
-//  test_psql0();
-//  test_psql1();
-//  test_psql_API();
-//  test_psql_tuple();
-    test_reckless();
-//  test_yaml0(); 
-//  test_yaml1(); 
-
     bool run_all = false;
     if (run_all)
     {
@@ -196,7 +186,26 @@ int main(int argc, char* argv[])
         test_variant_with_decltype();
     }
 
-    // hackersrank
+    // ******************** //
+    // *** YLib modules *** //
+    // ******************** //
+    test_cat_files();
+    test_cut_files();
+//  test_cpoly();                // POD for C-style polymorphism
+//  test_compose_and_parse();    // POD for protocol composing and parsing
+//  test_event_handler(); 
+//  test_message_handler(); 
+//  test_psql0();
+//  test_psql1();
+//  test_psql_API();
+//  test_psql_tuple();
+//  test_reckless();
+//  test_yaml0(); 
+//  test_yaml1(); 
+
+    // ******************* //
+    // *** Hackersrank *** //
+    // ******************* //
 //  test_anagram();    
 //  test_int2str();
 //  test_matrix_spiral(); 

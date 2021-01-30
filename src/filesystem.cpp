@@ -13,7 +13,9 @@ void test_filesystem()
               << "\nparent_path()   = " << s.parent_path() 
               << "\nfilename()      = " << s.filename() 
               << "\nstem()          = " << s.stem() 
-              << "\nextension()     = " << s.extension() << "\n\n";
+              << "\nextension()     = " << s.extension()
+              << "\nsystem temp dir = " << std::filesystem::temp_directory_path()
+              << "\n\n";
 
     // (2) check if it is a file
     std::filesystem::path s0("D:/DEV/cplusplus/TraderRun source/Parser");
