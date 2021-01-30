@@ -87,8 +87,7 @@ void test_matrix_spiral();  // citadel
 void test_tree_checker();   // optiver
 
 // YLib : C-poly / event-handler / message-handler / PSQL / reckless / yaml
-void test_cat_files();
-void test_cut_files();
+void test_cat_cut();
 void test_cpoly(); 
 void test_compose_and_parse();   
 void test_event_handler(); 
@@ -189,8 +188,7 @@ int main(int argc, char* argv[])
     // ******************** //
     // *** YLib modules *** //
     // ******************** //
-    test_cat_files();
-    test_cut_files();
+    test_cat_cut();
 //  test_cpoly();                // POD for C-style polymorphism
 //  test_compose_and_parse();    // POD for protocol composing and parsing
 //  test_event_handler(); 

@@ -5,12 +5,11 @@
 #include<vector>
 #include<unordered_set>
 
-void test_cat_files()
+void test_cat_files(const std::string& cat_file, const std::string& tmp_file)
 {
     // *** Why absolute path does not work? Due to WSL? *** //
-//  std::filesystem::path input("~/dev/YExperimental_temp"); // Runtime error : not-exists 
-    std::filesystem::path input("../../../YExperimental_temp");
-    std::filesystem::path output("temp");
+    std::filesystem::path input(cat_file);
+    std::filesystem::path output(tmp_file);
     
 
     std::string tag("// ***** TAG_FOR_FILE_CAT ***** //");
@@ -141,10 +140,10 @@ void test_cat_files()
 //
 // The former supports std::string, the latter does not, need char* & length.
 // ************************************************************************** // 
-void test_cut_files()
+void test_cut_files(const std::string& tmp_file, const std::string& cut_file)
 {
-    std::filesystem::path input("temp");
-    std::filesystem::path output("../../../new_folder/extract");
+    std::filesystem::path input(tmp_file);
+    std::filesystem::path output(cut_file);
     std::filesystem::remove_all(output);
 
 
@@ -198,5 +197,18 @@ void test_cut_files()
     std::cout << "\n*** Completed *** ";
     std::cout << "\nfile  count = " << num_file;
 }
+
+void test_cat_cut()
+{
+    // Does not support absolute path, it throws runtime_error "file not found"
+//  test_cat_files("../../../YExperimental_20201030", "../../../cat_and_cut/tmp");
+//  test_cut_files("../../../cat_and_cut/tmp",        "../../../cat_and_cut/extract");
+
+    // For extraction of YLib files 
+    test_cut_files("../../../cat_and_cut/tmp0",       "../../../cat_and_cut/extract0");
+    test_cut_files("../../../cat_and_cut/tmp1",       "../../../cat_and_cut/extract1");
+}
+
+
 
 
