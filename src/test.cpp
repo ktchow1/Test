@@ -72,6 +72,7 @@ void test_tree_traverse();
 void test_tuple();
 void test_unique_ptr();
 void test_unique_ptr_to_noncopyable();
+void test_unique_ptr_to_array();
 void test_valgrind();
 void test_variadic();
 void test_variant_and_any();
@@ -103,6 +104,8 @@ void test_yaml1();
 
 int main(int argc, char* argv[])
 { 
+    test_unique_ptr_to_array();
+
     bool run_all = false;
     if (run_all)
     {
@@ -177,6 +180,7 @@ int main(int argc, char* argv[])
         test_tuple();     
         test_unique_ptr(); 
         test_unique_ptr_to_noncopyable();
+        test_unique_ptr_to_array();
         test_valgrind();  
         test_variadic();  
         test_variant_and_any();  

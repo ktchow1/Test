@@ -291,10 +291,8 @@ struct custom_header0
     {
 
         char* pc = buffer->reserve(M+2); 
-        pc[0]   = '[';
-        int_to_ascii<M>(pc+1, x); 
-        pc[M+1] = ']';
-        buffer->commit(M+2);
+        pc[0]   = '[';     int_to_ascii<M>(pc+1, x); 
+        pc[M+1] = ']';     buffer->commit(M+2);
         return true;
     }
 
@@ -307,14 +305,10 @@ struct custom_header1
     inline bool format(reckless::output_buffer* buffer) 
     {
         char* pc = buffer->reserve(M*3+4); 
-        pc[0] = '[';
-        int_to_ascii<M>(pc+1, x); 
-        pc[M+1] = '-';
-        int_to_ascii<M>(pc+M+2, y); 
-        pc[M*2+2] = '-';
-        int_to_ascii<M>(pc+M*2+3, z); 
-        pc[M*3+3] = ']';
-        buffer->commit(M*3+4);
+        pc[0]     = '[';   int_to_ascii<M>(pc    +1, x); 
+        pc[M+1]   = '-';   int_to_ascii<M>(pc+M  +2, y); 
+        pc[M*2+2] = '-';   int_to_ascii<M>(pc+M*2+3, z); 
+        pc[M*3+3] = ']';   buffer->commit(M*3+4);
         return true;
     }
 
