@@ -7,6 +7,7 @@ void test_backtrace();
 void test_casting();
 void test_casting_shared_ptr();
 void test_concepts();
+void test_concepts_invocable();
 void test_cstr(); 
 void test_ctad(); 
 void test_decltype();
@@ -104,7 +105,7 @@ void test_yaml1();
 
 int main(int argc, char* argv[])
 { 
-    test_unique_ptr_to_array();
+    test_concepts_invocable();
 
     bool run_all = false;
     if (run_all)
@@ -115,6 +116,7 @@ int main(int argc, char* argv[])
         test_casting();
         test_casting_shared_ptr();
         test_concepts();
+        test_concepts_invocable();
         test_cstr(); 
         test_ctad();
         test_decltype();
