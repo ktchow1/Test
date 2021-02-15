@@ -5,6 +5,21 @@
 #include<vector>
 #include<unordered_set>
 
+
+
+std::string remove_ctrlM(const std::string& str)
+{
+    auto pos = str.find('\r'); 
+    if (pos != std::string::npos)
+    {
+        return str.substr(0,pos); 
+    }
+    else
+    {
+        return str;
+    }
+}
+
 void test_cat_files(const std::string& cat_file, const std::string& tmp_file)
 {
     // *** Why absolute path does not work? Due to WSL? *** //
@@ -156,6 +171,7 @@ void test_cut_files(const std::string& tmp_file, const std::string& cut_file)
     {
         std::string str;
         std::getline(ifs, str); 
+        str = remove_ctrlM(str);
 
         // *********** //
         // *** Tag *** //
@@ -169,6 +185,8 @@ void test_cut_files(const std::string& tmp_file, const std::string& cut_file)
 
             // *** Load filename *** //
             std::getline(ifs, str); 
+            str = remove_ctrlM(str);
+
             if (str.size() <= 3)   throw std::runtime_error("incorrect file format 0");
             if (str[0] != '/')     throw std::runtime_error("incorrect file format 1");
             if (str[1] != '/')     throw std::runtime_error("incorrect file format 2");
@@ -205,8 +223,9 @@ void test_cat_cut()
 //  test_cut_files("../../../cat_and_cut/tmp",        "../../../cat_and_cut/extract");
 
     // For extraction of YLib files 
-    test_cut_files("../../../cat_and_cut/tmp0",       "../../../cat_and_cut/extract0");
-    test_cut_files("../../../cat_and_cut/tmp1",       "../../../cat_and_cut/extract1");
+    test_cut_files("../../../cat_and_cut/tmp0.txt",  "../../../cat_and_cut/YLibrary");
+    test_cut_files("../../../cat_and_cut/tmp1.txt",  "../../../cat_and_cut/hk-options");
+    test_cut_files("../../../cat_and_cut/tmp2.txt",  "../../../cat_and_cut/threadpool");
 }
 
 

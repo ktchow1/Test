@@ -105,7 +105,7 @@ void test_yaml1();
 
 int main(int argc, char* argv[])
 { 
-    test_concepts_invocable();
+//  test_concepts_invocable();
 
     bool run_all = false;
     if (run_all)
@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
     // ******************** //
     // *** YLib modules *** //
     // ******************** //
-//  test_cat_cut();
+    test_cat_cut();
 //  test_cpoly();                // POD for C-style polymorphism
 //  test_compose_and_parse();    // POD for protocol composing and parsing
 //  test_event_handler(); 
@@ -204,8 +204,8 @@ int main(int argc, char* argv[])
 //  test_psql1();
 //  test_psql_API();
 //  test_psql_tuple();
-    test_reckless_custom_argument();
-    test_reckless_custom_header_and_argument();
+//  test_reckless_custom_argument();
+//  test_reckless_custom_header_and_argument();
 //  test_yaml0(); 
 //  test_yaml1(); 
 
