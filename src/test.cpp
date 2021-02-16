@@ -19,6 +19,8 @@ void test_enum();
 void test_filesystem();
 void test_function_array_arg();
 void test_function_macro();
+void test_global_and_static0();
+void test_global_and_static1();
 void test_gtest(int argc, char* argv[]);
 void test_hashfct0();
 void test_hashfct1();
@@ -105,7 +107,8 @@ void test_yaml1();
 
 int main(int argc, char* argv[])
 { 
-//  test_concepts_invocable();
+    test_global_and_static0();
+    test_global_and_static1();
 
     bool run_all = false;
     if (run_all)
@@ -128,6 +131,8 @@ int main(int argc, char* argv[])
         test_filesystem(); 
         test_function_array_arg();
         test_function_macro();
+        test_global_and_static0();
+        test_global_and_static1();
         test_gtest(argc, argv);
         test_hashfct0();
         test_hashfct1(); 
@@ -195,7 +200,7 @@ int main(int argc, char* argv[])
     // ******************** //
     // *** YLib modules *** //
     // ******************** //
-    test_cat_cut();
+//  test_cat_cut();
 //  test_cpoly();                // POD for C-style polymorphism
 //  test_compose_and_parse();    // POD for protocol composing and parsing
 //  test_event_handler(); 
